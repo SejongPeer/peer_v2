@@ -1,4 +1,5 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
+import { COLORS } from "../theme";
 
 const GlobalStyles = createGlobalStyle`
   *,
@@ -30,7 +31,7 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center; */
   }
   body {
-    line-height: 1.5;
+    /* line-height: 1.5; */
     -webkit-font-smoothing: antialiased;
   }
   
@@ -64,6 +65,16 @@ const GlobalStyles = createGlobalStyle`
   #__next {
     isolation: isolate;
   }
+`;
+
+export const buttonStyle = css`
+  width: 100%;
+  height: 56px;
+  background-color: ${COLORS.main};
+  border-radius: 35px;
+  color: ${COLORS.white};
+  font-weight: 800;
+  font-size: 18px;
 `;
 
 export default GlobalStyles;

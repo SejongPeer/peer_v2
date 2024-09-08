@@ -1,5 +1,5 @@
+import React from "react";
 import styled from "styled-components";
-import Banner from "../components/banner";
 
 import buddyBtn from "../assets/images/buddyBtn.png";
 import honbobBtn from "../assets/images/honbabBtn.png";
@@ -8,30 +8,36 @@ import externalBtn from "../assets/images/externalBtn.png";
 import kakaoImg from "../assets/images/kakao.png";
 
 import { COLORS } from "../theme";
+import { Header } from "../components/header";
+
+const Banner = React.lazy(() => import("../components/banner"));
 
 export const HomePage = () => {
   return (
-    <Container>
-      <Banner />
-      <BtnContainer1>
-        <Btn1 src={buddyBtn}></Btn1>
-        <Btn1 src={honbobBtn}></Btn1>
-      </BtnContainer1>
-      <StudyContainer>
-        <TitleContainer>
-          <Title1>세종스터디</Title1>
-          <Title2>인생 팀원 구하기</Title2>
-        </TitleContainer>
+    <>
+      <Header />
+      <Container>
+        <Banner />
         <BtnContainer1>
-          <Btn2 src={schoolBtn}></Btn2>
-          <Btn2 src={externalBtn}></Btn2>
+          <Btn1 src={buddyBtn}></Btn1>
+          <Btn1 src={honbobBtn}></Btn1>
         </BtnContainer1>
-      </StudyContainer>
-      <KakaoBtn>
-        <KakaoImg src={kakaoImg}></KakaoImg>
-        <Text>카카오톡 문의하기</Text>
-      </KakaoBtn>
-    </Container>
+        <StudyContainer>
+          <TitleContainer>
+            <Title1>세종스터디</Title1>
+            <Title2>인생 팀원 구하기</Title2>
+          </TitleContainer>
+          <BtnContainer1>
+            <Btn2 src={schoolBtn}></Btn2>
+            <Btn2 src={externalBtn}></Btn2>
+          </BtnContainer1>
+        </StudyContainer>
+        <KakaoBtn>
+          <KakaoImg src={kakaoImg}></KakaoImg>
+          <Text>카카오톡 문의하기</Text>
+        </KakaoBtn>
+      </Container>
+    </>
   );
 };
 
