@@ -35,7 +35,7 @@ export const RegisterStep4 = () => {
   });
 
   const [isMinorChecked, setIsMinorChecked] = useState(false);
-  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [_isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
   localStorage.setItem("subCollege", "null");
   localStorage.setItem("subMajor", "null");
