@@ -28,22 +28,6 @@ export const RegisterPage = () => {
     }
   };
 
-  // 다음 단계로 이동하는 함수
-  const goToNextStep = () => {
-    const nextStep = parseInt(step) + 1;
-    setSearchParams({ step: nextStep.toString() });
-  };
-
-  // 이전 단계로 이동하는 함수
-  const goToPreviousStep = () => {
-    const prevStep = parseInt(step) - 1;
-    if (prevStep > 0) {
-      setSearchParams({ step: prevStep.toString() });
-    } else {
-      navigate(-1); // 이전 페이지로 이동
-    }
-  };
-
   return (
     <div>
       <SubHeader text="회원가입" />

@@ -100,7 +100,7 @@ const EIE = {
   ],
 } as const;
 
-type College = keyof typeof EIE; // 단과대학의 키 타입 정의
-type Department = (typeof EIE)[College][number]; // 학과 타입 정의
+// type College = keyof typeof EIE; // 단과대학의 키 타입 정의
+// type Department = (typeof EIE)[College][number]; // 학과 타입 정의
 
 export default EIE;

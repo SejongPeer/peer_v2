@@ -3,17 +3,19 @@ import styled from "styled-components";
 import EIE from "./Major";
 
 const MajorDropDown = () => {
-  const [selectedCollege, setSelectedCollege] = useState<string | null>(() => {
-    return localStorage.getItem("college") || null; // 초기 상태를 로컬 스토리지에서 가져옴
+  const [selectedCollege, setSelectedCollege] = useState<
+    keyof typeof EIE | null
+  >(() => {
+    return (localStorage.getItem("college") as keyof typeof EIE) || null;
   });
   const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
     () => {
-      return localStorage.getItem("major") || null; // 초기 상태를 로컬 스토리지에서 가져옴
+      return localStorage.getItem("major") || null;
     }
   );
 
   const handleCollegeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const college = e.target.value;
+    const college = e.target.value as keyof typeof EIE;
     setSelectedCollege(college);
     setSelectedDepartment(null); // 새로운 단과대학 선택 시 학과 초기화
     localStorage.setItem("college", college); // 선택한 단과대 로컬 스토리지에 저장
@@ -50,7 +52,7 @@ const MajorDropDown = () => {
             <option value="" disabled>
               학과를 선택하세요
             </option>
-            {EIE[selectedCollege].map((department) => (
+            {(EIE[selectedCollege] || []).map((department) => (
               <option key={department} value={department}>
                 {department}
               </option>
