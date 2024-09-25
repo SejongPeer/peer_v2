@@ -7,7 +7,7 @@ export const Header = () => {
   return (
     <Container>
       <Container2>
-        <Logo src={logo}></Logo>
+        <Logo src={logo} alt="세종피어"></Logo>
         <Login>로그인</Login>
       </Container2>
     </Container>
