@@ -1,5 +1,9 @@
 export interface SejongAuthResponse {
-  data: any;
+  data: {
+    name: string; // 사용자 이름
+    grade: string; // 학년
+    major: string; // 전공
+  };
   msg: string;
   grade: string;
   major: string;
