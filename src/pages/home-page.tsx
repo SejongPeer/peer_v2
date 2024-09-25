@@ -67,7 +67,7 @@ const StudyContainer = styled.div`
 const TitleContainer = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  gap: 5px;
 `;
 const Title1 = styled.p`
   font-family: "jalnan";
