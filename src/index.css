@@ -50,7 +50,7 @@ button:focus-visible {
 }
 
 body {
-  background-color: #fff7f7;
+  /* background-color: #fff7f7; */
 }
 
 @media (prefers-color-scheme: light) {
