@@ -3,7 +3,7 @@ import { COLORS } from "../../theme";
 import { useState } from "react";
 import { authenticateSejongUser } from "../../services/apis/user.service";
 import { useNavigate } from "react-router-dom";
-import { buttonStyle } from "../../styles/global-styles";
+import { Body2R, buttonStyle, Head2 } from "../../styles/global-styles";
 import { toast } from "sonner";
 
 export const RegisterStep2: React.FC = () => {
@@ -21,11 +21,12 @@ export const RegisterStep2: React.FC = () => {
 
   const handleLogin = async () => {
     const result = await authenticateSejongUser(id, pw);
+    console.log(result);
     localStorage.setItem("studentId", id);
     // 세종대학교 인증이 성공적으로 되었을 때만 studentId를 저장하고 다음 단계로 이동
-    if (result && result.data.name !== null) {
+    if (result) {
       localStorage.setItem("studentId", id);
-      navigate("/register?step=3");
+      navigate("/register?step=3-1");
     } else {
       // 인증 실패 시 다음 단계로 이동하지 않고, 에러 메시지를 표시합니다.
       toast.error("인증에 실패했습니다. 정보를 다시 확인해 주세요.");
@@ -71,23 +72,21 @@ const Container = styled.div`
 const TermsContainer = styled.div``;
 
 const TermsText = styled.p`
-  font-size: 18px;
-  font-weight: 800;
+  ${Head2}
   color: ${COLORS.font1};
   margin-bottom: 4px;
 `;
 
 const Text = styled.p`
-  font-size: 14px;
-  font-weight: 500;
+  ${Body2R}
   color: #555;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 16px;
-  gap: 4px;
+  margin-top: 20px;
+  gap: 8px;
 `;
 
 const Id = styled.input`
@@ -108,14 +107,14 @@ const Pw = styled.input`
 
 const Confirm = styled.button`
   ${buttonStyle}
-  margin-top: 12px;
+  margin-top: 20px;
 `;
 
 const Address = styled.a`
   display: flex;
   justify-content: center;
   text-decoration: underline;
-  color: #777;
+  color: ${COLORS.font2};
   font-size: 14px;
   margin-top: 8px;
 `;

@@ -30,10 +30,11 @@ const MajorDropDown = () => {
 
   return (
     <Container>
-      <Label>단과대학 선택</Label>
+
+      {/* <Label>단과대학 선택</Label> */}
       <Dropdown value={selectedCollege || ""} onChange={handleCollegeChange}>
         <option value="" disabled>
-          단과대학을 선택하세요
+          학과 선택
         </option>
         {Object.keys(EIE).map((college) => (
           <option key={college} value={college}>
@@ -44,13 +45,13 @@ const MajorDropDown = () => {
 
       {selectedCollege && (
         <>
-          <Label>학과 선택</Label>
+          {/* <Label>학과 선택</Label> */}
           <Dropdown
             value={selectedDepartment || ""}
             onChange={handleDepartmentChange}
           >
             <option value="" disabled>
-              학과를 선택하세요
+              학과 선택
             </option>
             {(EIE[selectedCollege] || []).map((department) => (
               <option key={department} value={department}>
@@ -65,23 +66,21 @@ const MajorDropDown = () => {
 };
 
 const Container = styled.div`
-  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const Label = styled.label`
-  font-weight: 600;
-  margin-bottom: 5px;
-`;
 
 const Dropdown = styled.select`
   width: 100%;
-  padding: 10px;
-  border-radius: 10px;
+  height: 48px;
+  border-radius: 35px;
   border: 1px solid #ccc;
   font-size: 16px;
+  color: black;
+  background-color: white;
+  padding-left: 10px;
 `;
 
 export default MajorDropDown;

@@ -1,5 +1,6 @@
 export interface SejongAuthResponse {
   data: {
+    isAuth: boolean;
     name: string; // 사용자 이름
     grade: string; // 학년
     major: string; // 전공

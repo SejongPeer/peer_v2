@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { SigninType, signInSchema } from "../lib/schema/auth.schema"; // 스키마 및 타입 임포트
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { SubHeader } from "../components/subHeader";
 import { COLORS } from "../theme";
+import { LoginHeader } from "../components/loginHeader";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const LoginPage = () => {
 
   return (
     <Container>
-      <SubHeader text="로그인" />
+      <LoginHeader text="로그인" backgroundColor="white" textColor="black" />
       <LoginContainer>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <FormItem>
@@ -68,40 +68,39 @@ export const LoginPage = () => {
   );
 };
 
-// 스타일링 컴포넌트 코드 동일
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: white;
 `;
 
 const Container2 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 12px;
 `;
 
 const Find = styled.p`
   font-size: 14px;
-  color: #b1b0b0;
+  color: ${COLORS.font3};
 `;
 
 const Divider = styled.div`
   width: 1px;
   height: 14px;
-  background-color: #b1b0b0;
+  background-color: ${COLORS.font3};
   margin: 0 8px;
 `;
 
 const LoginContainer = styled.div`
-  padding: 64px 16px;
+  padding: 44px 16px;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   width: 100%;
 `;
 
@@ -128,13 +127,13 @@ const ErrorMessage = styled.p`
 const SubmitButton = styled.button`
   padding: 12px 20px;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   color: #fff;
   background-color: ${COLORS.main};
   border: none;
   border-radius: 35px;
   cursor: pointer;
-  margin-top: 12px;
+  margin-top: 20px;
   height: 56px;
   width: 100%;
 `;
@@ -145,5 +144,5 @@ const Warning = styled.p`
   color: ${COLORS.font1};
   font-weight: 500;
   font-size: 14px;
-  margin-top: 40px;
+  margin-top: 60px;
 `;

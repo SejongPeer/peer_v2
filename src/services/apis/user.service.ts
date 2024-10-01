@@ -21,17 +21,16 @@ export const authenticateSejongUser = async (
     );
 
     const result = response.data;
-    console.log(result);
+    console.log(result.data.isAuth);
     localStorage.setItem("name", result.data.name);
     localStorage.setItem("grade", result.data.grade);
     // console.log(result.data.name);
     // console.log(result.data.grade);
 
-    if (result.success) {
+    if (result.data.isAuth == true) {
       toast.success("세종대학교 학생 인증이 완료되었습니다!");
       return result; // 성공 시 결과 반환
     } else {
-      toast.error(result.msg);
       return null; // 실패 시 null 반환
     }
   } catch (error) {

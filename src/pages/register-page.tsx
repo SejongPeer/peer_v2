@@ -1,41 +1,50 @@
 import { useSearchParams } from "react-router-dom";
-import { RegisterStep1 } from "../components/register/registerStep1";
-import { RegisterStep2 } from "../components/register/registerStep2";
-import { RegisterStep3 } from "../components/register/registerStep3";
-import { RegisterStep4 } from "../components/register/registerStep4";
-import { SubHeader } from "../components/subHeader";
+import RegisterPage1 from "../components/register/registerStep1";
+import RegisterPage2 from "../components/register/registerStep2";
+import RegisterStep3Part1 from "../components/register/registerStep3_1";
+import RegisterStep3Part2 from "../components/register/registerStep3_2";
+import RegisterPage4 from "../components/register/registerStep4";
+
+import { useEffect } from "react";
+import { LoginHeader } from "../components/loginHeader";
 
 export const RegisterPage = () => {
+  // 쿼리 파라미터 사용
   const [searchParams] = useSearchParams();
-  // const navigate = useNavigate();
+  const step = searchParams.get("step") || "1"; // 기본값을 '1'로 설정
 
-  // 현재 step을 가져옴, 기본값은 1
-  const step = searchParams.get("step") || "1";
+  useEffect(() => {
+    // 페이지가 로드될 때 body 배경색 변경
+    document.body.style.backgroundColor = "#FAF5F5"; // 원하는 색상으로 변경
 
-  // 단계별 컴포넌트 렌더링
+    // 컴포넌트가 언마운트될 때 배경색 원래대로 복구
+    return () => {
+      document.body.style.backgroundColor = "";
+    };
+  }, []);
+
+  // 각 단계별로 다른 컴포넌트를 렌더링
   const renderStep = () => {
     switch (step) {
       case "1":
-        return <RegisterStep1 />;
+        return <RegisterPage1 />; // 약관 동의
       case "2":
-        return <RegisterStep2 />;
-      case "3":
-        return <RegisterStep3 />;
+        return <RegisterPage2 />; // 세종대학교 학생 인증
+      case "3-1":
+        return <RegisterStep3Part1 />; // 아이디
+      case "3-2":
+        return <RegisterStep3Part2 />; // 아이디
       case "4":
-        return <RegisterStep4 />;
+        return <RegisterPage4 />;
       default:
-        return <RegisterStep1 />;
+        return <RegisterPage1 />; // 잘못된 쿼리일 경우 기본값으로 1단계 렌더링
     }
   };
 
   return (
     <div>
-      <SubHeader text="회원가입" />
+      <LoginHeader backgroundColor="#FAF5F5" text={""} />
       {renderStep()}
-      {/* <div>
-        {step !== "1" && <button onClick={goToPreviousStep}>이전</button>}
-        {step !== "4" && <button onClick={goToNextStep}>다음</button>}
-      </div> */}
     </div>
   );
 };

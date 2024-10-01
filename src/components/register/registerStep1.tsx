@@ -3,9 +3,13 @@ import styled from "styled-components";
 import { COLORS } from "../../theme";
 import filledCheck from "../../assets/images/filledCheck.png";
 import unfilledCheck from "../../assets/images/unfilledCheck.png";
-import rigthArrow from "../../assets/images/rightArrow.png";
 import { useNavigate } from "react-router-dom";
-import { buttonStyle } from "../../styles/global-styles";
+import {
+  Body1M,
+  Body1Sb,
+  buttonStyle,
+  Head2,
+} from "../../styles/global-styles";
 
 export const RegisterStep1 = () => {
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -63,7 +67,6 @@ export const RegisterStep1 = () => {
             <SubItemContainer>
               <SubText style={{ color: "#ff4b4b" }}>[필수] </SubText>
               <SubText>이용약관 동의</SubText>
-              <LinkArrow src={rigthArrow} alt="arrow" />
             </SubItemContainer>
             <Checkbox
               onClick={handleTermCheck}
@@ -75,7 +78,6 @@ export const RegisterStep1 = () => {
             <SubItemContainer>
               <SubText style={{ color: "#ff4b4b" }}>[필수] </SubText>
               <SubText>개인정보 수집 및 이용약관</SubText>
-              <LinkArrow src={rigthArrow} alt="arrow" />
             </SubItemContainer>
             <Checkbox
               onClick={handlePrivacyCheck}
@@ -84,29 +86,30 @@ export const RegisterStep1 = () => {
             />
           </SubItem>
         </SubAgreement>
+        <NextButton
+          $enabled={isNextButtonEnabled}
+          onClick={handleNextClick} // 버튼 클릭 시 handleNextClick 호출
+        >
+          다음
+        </NextButton>
       </TermsContainer>
-      <NextButton
-        $enabled={isNextButtonEnabled}
-        onClick={handleNextClick} // 버튼 클릭 시 handleNextClick 호출
-      >
-        다음
-      </NextButton>
     </Container>
   );
 };
 
 const Container = styled.div`
-  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-const TermsContainer = styled.div``;
+
+const TermsContainer = styled.div`
+  padding: 24px;
+`;
 
 const TermsText = styled.p`
-  font-size: 18px;
-  font-weight: 800;
+  ${Head2}
   color: ${COLORS.font1};
   margin-bottom: 16px;
 `;
@@ -121,14 +124,13 @@ const MainAgreement = styled.div`
   height: 52px;
   background-color: white;
   border-radius: 28px;
-  border: 1px solid ${COLORS.line2};
   padding: 14px 12px 14px 20px;
 `;
 
 const SubAgreement = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
 `;
 
@@ -146,20 +148,13 @@ const SubItemContainer = styled.div`
 `;
 
 const AgreementText = styled.p`
-  font-size: 16px;
-  font-weight: 600;
+  ${Body1M}
+  color: ${COLORS.font1};
 `;
 
 const SubText = styled.p`
-  font-size: 16px;
-  font-weight: 500;
-  color: ${COLORS.font2};
-`;
-
-const LinkArrow = styled.img`
-  width: 8px;
-  height: 13px;
-  margin-left: 2px;
+  ${Body1M}
+  color: ${COLORS.font1};
 `;
 
 const Checkbox = styled.img`
@@ -174,6 +169,7 @@ const NextButton = styled.button<{ $enabled: boolean }>`
     $enabled ? COLORS.main : COLORS.line1}; // 조건에 따라 배경색 변경
   cursor: ${({ $enabled }) => ($enabled ? "pointer" : "not-allowed")};
   margin-top: 20px;
+  ${Body1Sb}
 `;
 
 export default RegisterStep1;

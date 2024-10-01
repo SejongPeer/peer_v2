@@ -7,7 +7,7 @@ import GenderToggleButton from "./genderToggleButton";
 import MajorDropDown from "./majorDropDown";
 import { toast } from "sonner";
 import { COLORS } from "../../theme";
-import { buttonStyle } from "../../styles/global-styles";
+import { Body3Sb, buttonStyle, Head2 } from "../../styles/global-styles";
 import { useNavigate } from "react-router-dom";
 import { checkNicknameAvailability } from "../../services/apis/user.service";
 
@@ -201,8 +201,7 @@ const Label = styled.div`
 `;
 
 const Text = styled.p`
-  font-size: 18px;
-  font-weight: 800;
+  ${Head2}
   color: ${COLORS.font1};
   margin-bottom: 4px;
 `;
@@ -227,7 +226,7 @@ const InputContainer = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  height: 44px;
+  height: 48px;
   background-color: white;
   border-radius: 35px;
   border: 1px solid ${COLORS.line2};
@@ -242,8 +241,7 @@ const CheckButton = styled.button`
   transform: translateY(-50%);
   height: 36px;
   padding: 6px 14px;
-  font-size: 15px;
-  font-weight: 600;
+  ${Body3Sb}
   color: white;
   background-color: ${COLORS.main};
   border: none;

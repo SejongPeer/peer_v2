@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../theme";
 
-import backArrow from "../assets/images/backArrow.png";
-import user from "../assets/images/user.png";
+import backArrow_Black from "../assets/images/backArrow_Black.png";
+import user_black from "../assets/images/user_black.png";
 
 interface SubHeaderProps {
   text: string;
@@ -12,7 +12,7 @@ interface SubHeaderProps {
   showGoBack?: boolean; // GoBack 버튼 표시 여부
 }
 
-export const SubHeader = ({
+export const LoginHeader = ({
   text,
   backgroundColor = COLORS.main, // 기본값은 main 색상
   textColor = "white", // 기본값은 흰색
@@ -23,7 +23,6 @@ export const SubHeader = ({
 
   const handleUserClick = () => {
     if (token) {
-
       navigate("/my-page"); // 로그인된 경우 /my-page로 이동
     } else {
       navigate("/login"); // 로그인되지 않은 경우 /login으로 이동
@@ -39,12 +38,16 @@ export const SubHeader = ({
       <Container3>
         <Container2>
           {showGoBack && (
-            <GoBack src={backArrow} onClick={handleGoBack} alt="Go Back" />
+            <GoBack
+              src={backArrow_Black}
+              onClick={handleGoBack}
+              alt="Go Back"
+            />
           )}
           <Text textColor={textColor}>{text}</Text>
         </Container2>
         {token ? (
-          <Login src={user} onClick={handleUserClick} alt="User Icon" />
+          <Login src={user_black} onClick={handleUserClick} alt="User Icon" />
         ) : (
           <LoginText onClick={handleUserClick}>로그인</LoginText>
         )}
@@ -52,7 +55,6 @@ export const SubHeader = ({
     </Container>
   );
 };
-
 
 const Container = styled.div<{ backgroundColor: string }>`
   width: 100%;
@@ -98,6 +100,6 @@ const Login = styled.img`
 const LoginText = styled.p`
   font-size: 16px;
   font-weight: 600;
-  color: white;
+  color: black;
   cursor: pointer;
 `;

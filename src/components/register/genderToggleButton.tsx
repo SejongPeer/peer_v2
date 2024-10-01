@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../../theme";
+import { Body3Sb } from "../../styles/global-styles";
 
 export const GenderToggleButton = () => {
   const [selectedGender, setSelectedGender] = useState<"MALE" | "FEMALE">(
@@ -22,13 +23,13 @@ export const GenderToggleButton = () => {
         isSelected={selectedGender === "MALE"}
         onClick={() => handleGenderChange("MALE")}
       >
-        남성
+        남자
       </GenderButton>
       <GenderButton
         isSelected={selectedGender === "FEMALE"}
         onClick={() => handleGenderChange("FEMALE")}
       >
-        여성
+        여자
       </GenderButton>
     </GenderContainer>
   );
@@ -58,6 +59,7 @@ const GenderButton = styled.button<{ isSelected: boolean }>`
   outline: none;
   border-radius: 35px;
   height: 36px;
+  ${Body3Sb}
 `;
 
 export default GenderToggleButton;
