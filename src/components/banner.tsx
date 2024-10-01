@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import banner1 from "../assets/images/banner1.png";
-import banner2 from "../assets/images/banner2.png";
-import banner3 from "../assets/images/banner3.png";
+import banner1 from "../assets/images/banner1.webp";
+import banner2 from "../assets/images/banner2.webp";
+import banner3 from "../assets/images/banner3.webp";
 
 const images = [banner1, banner2, banner3];
 
@@ -37,14 +37,12 @@ const Banner = () => {
   };
 
   return (
-    <SliderContainer>
-      <SlideImage
-        src={images[currentImageIndex]}
-        slideIn={slideIn}
-        alt={`Banner ${currentImageIndex + 1}`}
-        onClick={onImageClick} // onClick 이벤트 핸들러가 index 대신 currentImageIndex를 사용
-      />
-    </SliderContainer>
+    <SlideImage
+      src={images[currentImageIndex]}
+      slideIn={slideIn}
+      alt={`Banner ${currentImageIndex + 1}`}
+      onClick={onImageClick} // onClick 이벤트 핸들러가 index 대신 currentImageIndex를 사용
+    />
   );
 };
 
@@ -74,17 +72,10 @@ interface SlideImageProps {
   slideIn: boolean;
 }
 
-const SliderContainer = styled.div`
-  width: 100%;
-  height: 112px;
-  overflow: hidden;
-  position: relative;
-  border-radius: 8px;
-`;
-
 const SlideImage = styled.img<SlideImageProps>`
   width: 100%;
-  height: 100%;
+  height: 112px;
+  border-radius: 8px;
   object-fit: cover;
   animation: ${({ slideIn }) => (slideIn ? fadeIn : fadeOut)} 0.5s ease-in-out;
   cursor: pointer; // 커서를 포인터로 변경
