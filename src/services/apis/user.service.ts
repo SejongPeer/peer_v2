@@ -35,7 +35,7 @@ export const authenticateSejongUser = async (
     }
   } catch (error) {
     console.error("인증 중 오류 발생: ", error);
-    toast.error("인증에 실패했습니다. 다시 시도해주세요.");
+    // toast.error("인증에 실패했습니다. 다시 시도해주세요.");
     return null; // 오류 발생 시 null 반환
   }
 };
@@ -53,8 +53,9 @@ export const checkAccountAvailability = async (
     );
 
     const result = response.data;
-
-    if (result.isExist) {
+    console.log(result);
+    console.log(result.data.isExist);
+    if (result.data.isExist) {
       toast.error("이미 존재하는 아이디입니다. 다른 아이디를 사용해 주세요.");
       return false; // 중복된 아이디가 있을 경우 false 반환
     } else {
@@ -82,6 +83,7 @@ export const checkNicknameAvailability = async (
       }
     );
 
+    console.log(response);
     return !response.data.isExist;
   } catch (error) {
     console.error("닉네임 중복 확인 중 오류 발생: ", error);

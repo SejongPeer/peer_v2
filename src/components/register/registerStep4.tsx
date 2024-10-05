@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import styled from "styled-components";
@@ -11,6 +11,7 @@ import { Body3Sb, buttonStyle, Head2 } from "../../styles/global-styles";
 import { useNavigate } from "react-router-dom";
 import { checkNicknameAvailability } from "../../services/apis/user.service";
 
+// 타입 정의
 type SignUpStep4FormData = {
   nickname: string;
   kakaoId: string;
@@ -29,6 +30,7 @@ export const RegisterStep4 = () => {
     handleSubmit,
     register,
     getValues,
+    setValue, // 로컬 스토리지에서 데이터를 불러올 때 사용
     formState: { errors },
   } = useForm<SignUpStep4FormData>({
     resolver: zodResolver(signUpStep4Schema),
@@ -37,9 +39,18 @@ export const RegisterStep4 = () => {
   const [isMinorChecked, setIsMinorChecked] = useState(false);
   const [_isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
-  localStorage.setItem("subCollege", "null");
-  localStorage.setItem("subMajor", "null");
+  // 컴포넌트가 마운트될 때 로컬 스토리지에서 데이터를 불러옴
+  useEffect(() => {
+    const savedCollege = localStorage.getItem("college");
+    const savedMajor = localStorage.getItem("major");
+    const savedGender = localStorage.getItem("gender");
 
+    if (savedCollege) setValue("college", savedCollege);
+    if (savedMajor) setValue("major", savedMajor);
+    if (savedGender) setValue("gender", savedGender as "남성" | "여성");
+  }, [setValue]);
+
+  // 닉네임 중복 확인
   const handleCheckNickname = async () => {
     const nickname = getValues("nickname");
     if (nickname) {
@@ -61,10 +72,10 @@ export const RegisterStep4 = () => {
   const onSubmit = (data: SignUpStep4FormData) => {
     console.log("onSubmit 함수가 호출되었습니다.", data);
 
-    // Fetching data from localStorage
-    const account = localStorage.getItem("account");
-    const password = localStorage.getItem("password");
-    const passwordCheck = localStorage.getItem("passwordCheck");
+    // 로컬 스토리지에서 데이터를 불러옴
+    const account = localStorage.getItem("회원가입_아이디");
+    const password = localStorage.getItem("회원가입_비밀번호");
+    const passwordCheck = localStorage.getItem("회원가입_비밀번호확인");
     const name = localStorage.getItem("name");
     const studentId = localStorage.getItem("studentId");
     const grade = localStorage.getItem("grade");
@@ -76,7 +87,7 @@ export const RegisterStep4 = () => {
       : null;
     const subMajor = isMinorChecked ? localStorage.getItem("subMajor") : null;
 
-    // Final form data combining both localStorage and form data
+    // 최종 데이터를 통합
     const finalFormData = {
       account,
       password,
@@ -96,7 +107,7 @@ export const RegisterStep4 = () => {
 
     console.log("최종 Form Data:", finalFormData);
 
-    // Here you would submit finalFormData to your server
+    // 최종 데이터를 서버로 제출
     // await submitFormDataToServer(finalFormData);
 
     toast.success("회원가입 정보가 저장되었습니다.");
@@ -185,6 +196,7 @@ export const RegisterStep4 = () => {
   );
 };
 
+// Styled-components로 스타일링한 컴포넌트들
 const Container = styled.div`
   padding: 24px;
 `;
