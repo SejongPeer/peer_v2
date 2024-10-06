@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../theme";
 import { LoginHeader } from "../components/loginHeader";
+import { axiosInstance } from "../services/axios-instance"; // axiosInstance 가져오기
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -18,11 +19,50 @@ export const LoginPage = () => {
     resolver: zodResolver(signInSchema), // Zod 스키마를 리졸버로 사용
   });
 
-  const onSubmit = (data: SigninType) => {
-    console.log("유효한 데이터:", data);
-    // 로그인 처리 로직 추가
-    toast.success("로그인 성공!");
-    navigate("/dashboard"); // 로그인 성공 시 대시보드로 이동 예시
+  // 로그인 요청 처리
+  const onSubmit = async (data: SigninType) => {
+    try {
+      const response = await axiosInstance.post("/auth/sign-in", {
+        account: data.username, // API에서 요구하는 필드명
+        password: data.password,
+      });
+
+      console.log(response.data);
+      // 서버로부터 받은 토큰을 로컬 스토리지에 저장
+      const {
+        accessToken,
+        account,
+        gender,
+        grade,
+        kakaoAccount,
+        major,
+        minor,
+        name,
+        nickname,
+        phoneNumber,
+        refreshToken,
+        studentId,
+      } = response.data.data;
+      // 데이터를 로컬 스토리지에 저장
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("name", name); // 유저 이름도 저장
+      localStorage.setItem("account", account);
+      localStorage.setItem("gender", gender);
+      localStorage.setItem("grade", grade.toString()); // 숫자일 경우 문자열로 변환
+      localStorage.setItem("kakaoAccount", kakaoAccount);
+      localStorage.setItem("major", major);
+      localStorage.setItem("minor", minor);
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("phoneNumber", phoneNumber);
+      localStorage.setItem("studentId", studentId);
+
+      toast.success("로그인 성공!");
+      navigate("/"); // 로그인 성공 시 메인 페이지로 이동
+    } catch (error) {
+      console.error("로그인 중 오류 발생:", error);
+      toast.error("로그인 실패! 아이디 또는 비밀번호를 확인해 주세요.");
+    }
   };
 
   return (
@@ -53,8 +93,8 @@ export const LoginPage = () => {
               <ErrorMessage>{errors.password.message}</ErrorMessage>
             )}
           </FormItem>
+          <SubmitButton type="submit">로그인</SubmitButton>
         </Form>
-        <SubmitButton type="submit">로그인</SubmitButton>
         <Container2>
           <Find>ID • PW 찾기</Find>
           <Divider></Divider>

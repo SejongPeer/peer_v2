@@ -12,4 +12,5 @@ export const COLORS = {
   font4: "#999999",
   white: "#fff",
   black: "#111",
+  disabled: "#CDCACA",
 };

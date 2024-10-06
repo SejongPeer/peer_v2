@@ -16,7 +16,9 @@ export interface SejongAuthResponse {
 }
 
 export interface CheckAccountResponse {
-  isExist: boolean;
+  data: {
+    isExist: boolean;
+  };
   msg: string;
   statusCode: number;
 }

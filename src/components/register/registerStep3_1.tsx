@@ -1,7 +1,4 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { signUpStep3Schema } from "../../lib/schema/auth.schema";
 import styled from "styled-components";
 import { COLORS } from "../../theme";
 import {
@@ -11,40 +8,49 @@ import {
   Head2,
 } from "../../styles/global-styles";
 import { checkAccountAvailability } from "../../services/apis/user.service";
-import { z } from "zod";
-
-type SignUpFormData = z.infer<typeof signUpStep3Schema>;
+import { useState, useEffect } from "react";
 
 export const RegisterStep3Part1 = () => {
   const navigate = useNavigate();
 
-  const goStep3_2 = () => {
-    navigate("/register?step=3-2");
-  };
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [isAccountChecked, setIsAccountChecked] = useState(false);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(signUpStep3Schema),
-  });
+  useEffect(() => {
+    // 모든 필드가 입력되고 아이디 중복 확인이 완료되었을 때만 버튼 활성화
+    if (
+      account &&
+      password &&
+      passwordCheck &&
+      isAccountChecked &&
+      password === passwordCheck
+    ) {
+      setIsButtonEnabled(true);
+    } else {
+      setIsButtonEnabled(false);
+    }
+  }, [account, password, passwordCheck, isAccountChecked]);
 
-  const onSubmit = (data: SignUpFormData) => {
-    console.log(data);
-    localStorage.setItem("account", data.account);
-    localStorage.setItem("password", data.password);
-    localStorage.setItem("passwordCheck", data.passwordCheck);
-    navigate("/register?step=3-part2"); // 다음 페이지로 이동
+  const onSubmit = () => {
+    console.log("onSubmit 클릭됨!");
+    // localStorage에 저장
+    localStorage.setItem("회원가입_아이디", account);
+    localStorage.setItem("회원가입_비밀번호", password);
+    localStorage.setItem("회원가입_비밀번호확인", passwordCheck);
+    navigate("/register?step=3-2"); // 다음 페이지로 이동
   };
 
   const handleCheckAccount = async () => {
-    const account = getValues("account");
     if (account) {
       const isAvailable = await checkAccountAvailability(account);
       if (isAvailable) {
         console.log("사용 가능한 아이디입니다.");
+        setIsAccountChecked(true);
+      } else {
+        setIsAccountChecked(false);
       }
     }
   };
@@ -52,40 +58,46 @@ export const RegisterStep3Part1 = () => {
   return (
     <Container>
       <Text>아이디, 비밀번호</Text>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
         <LabelContainer>
           <Label>아이디</Label>
           <InputContainer>
-            <Input {...register("account")} placeholder="아이디 입력" />
+            <Input
+              value={account}
+              onChange={(e) => setAccount(e.target.value)}
+              placeholder="아이디 입력"
+            />
             <CheckButton type="button" onClick={handleCheckAccount}>
               중복확인
             </CheckButton>
           </InputContainer>
-          {errors.account && <Warning>{errors.account.message}</Warning>}
         </LabelContainer>
 
         <LabelContainer>
           <Label>비밀번호</Label>
           <Input
             type="password"
-            {...register("password")}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="비밀번호 입력"
           />
-          {errors.password && <Warning>{errors.password.message}</Warning>}
         </LabelContainer>
 
         <LabelContainer>
           <Input
             type="password"
-            {...register("passwordCheck")}
+            value={passwordCheck}
+            onChange={(e) => setPasswordCheck(e.target.value)}
             placeholder="비밀번호 확인"
           />
-          {errors.passwordCheck && (
-            <Warning>{errors.passwordCheck.message}</Warning>
-          )}
         </LabelContainer>
 
-        <NextBtn onClick={goStep3_2} type="submit">
+        <NextBtn type="submit" disabled={!isButtonEnabled}>
           다음
         </NextBtn>
       </Form>
@@ -146,13 +158,12 @@ const CheckButton = styled.button`
   width: 80px;
 `;
 
-const Warning = styled.p`
-  color: ${COLORS.main};
-  margin-bottom: 2px;
-`;
-
-const NextBtn = styled.button`
+const NextBtn = styled.button<{ disabled: boolean }>`
   ${buttonStyle}
+  background-color: ${(props) =>
+    props.disabled ? COLORS.disabled : COLORS.main};
+  color: ${(props) => (props.disabled ? COLORS.white : COLORS.white)};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 export default RegisterStep3Part1;
