@@ -79,4 +79,5 @@ const SlideImage = styled.img<SlideImageProps>`
   object-fit: cover;
   animation: ${({ slideIn }) => (slideIn ? fadeIn : fadeOut)} 0.5s ease-in-out;
   cursor: pointer; // 커서를 포인터로 변경
+  margin-top: 16px
 `;
