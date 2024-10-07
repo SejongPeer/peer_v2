@@ -10,4 +10,7 @@ export const COLORS = {
   font2: "#555555",
   font3: "#777777",
   font4: "#999999",
+  white: "#fff",
+  black: "#111",
+  disabled: "#CDCACA",
 };
