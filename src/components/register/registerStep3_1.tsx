@@ -9,10 +9,13 @@ import {
 } from "../../styles/global-styles";
 import { checkAccountAvailability } from "../../services/apis/user.service";
 import { useState, useEffect } from "react";
+// import { useForm } from "react-hook-form"; // react-hook-form 주석 처리
+// import { useUserStore } from "../../store/useUserStore"; // Zustand 주석 처리
 
 export const RegisterStep3Part1 = () => {
   const navigate = useNavigate();
 
+  // react-hook-form 주석 처리 및 useState로 상태 관리
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -22,24 +25,23 @@ export const RegisterStep3Part1 = () => {
   useEffect(() => {
     // 모든 필드가 입력되고 아이디 중복 확인이 완료되었을 때만 버튼 활성화
     if (
-      account &&
+      isAccountChecked &&
       password &&
       passwordCheck &&
-      isAccountChecked &&
       password === passwordCheck
     ) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
     }
-  }, [account, password, passwordCheck, isAccountChecked]);
+  }, [isAccountChecked, password, passwordCheck]);
 
   const onSubmit = () => {
-    console.log("onSubmit 클릭됨!");
-    // localStorage에 저장
-    localStorage.setItem("회원가입_아이디", account);
-    localStorage.setItem("회원가입_비밀번호", password);
-    localStorage.setItem("회원가입_비밀번호확인", passwordCheck);
+    // localStorage에 값 저장
+    localStorage.setItem("account", account);
+    localStorage.setItem("password", password);
+    localStorage.setItem("passwordCheck", passwordCheck);
+
     navigate("/register?step=3-2"); // 다음 페이지로 이동
   };
 
@@ -50,6 +52,7 @@ export const RegisterStep3Part1 = () => {
         console.log("사용 가능한 아이디입니다.");
         setIsAccountChecked(true);
       } else {
+        console.log("사용할 수 없는 아이디입니다.");
         setIsAccountChecked(false);
       }
     }
@@ -105,6 +108,7 @@ export const RegisterStep3Part1 = () => {
   );
 };
 
+// Styled-components로 스타일링한 컴포넌트들
 const Container = styled.div`
   padding: 24px;
 `;

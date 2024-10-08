@@ -22,12 +22,14 @@ export const GenderToggleButton = () => {
       <GenderButton
         isSelected={selectedGender === "MALE"}
         onClick={() => handleGenderChange("MALE")}
+        type="button"
       >
         남자
       </GenderButton>
       <GenderButton
         isSelected={selectedGender === "FEMALE"}
         onClick={() => handleGenderChange("FEMALE")}
+        type="button"
       >
         여자
       </GenderButton>

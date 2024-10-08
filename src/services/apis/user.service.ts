@@ -21,13 +21,8 @@ export const authenticateSejongUser = async (
     );
 
     const result = response.data;
-    console.log(result.data.isAuth);
-    localStorage.setItem("name", result.data.name);
-    localStorage.setItem("grade", result.data.grade);
-    // console.log(result.data.name);
-    // console.log(result.data.grade);
 
-    if (result.data.isAuth == true) {
+    if (result.data.isAuth === true) {
       toast.success("세종대학교 학생 인증이 완료되었습니다!");
       return result; // 성공 시 결과 반환
     } else {
@@ -35,7 +30,6 @@ export const authenticateSejongUser = async (
     }
   } catch (error) {
     console.error("인증 중 오류 발생: ", error);
-    // toast.error("인증에 실패했습니다. 다시 시도해주세요.");
     return null; // 오류 발생 시 null 반환
   }
 };
@@ -88,5 +82,24 @@ export const checkNicknameAvailability = async (
   } catch (error) {
     console.error("닉네임 중복 확인 중 오류 발생: ", error);
     return false;
+  }
+};
+
+// 회원가입 API 요청 함수
+export const registerUser = async (formData: any) => {
+  try {
+    const response = await axiosInstance.post("/member/sign-up", formData);
+
+    if (response.status === 201 || response.status === 200) {
+      toast.success("회원가입이 성공적으로 완료되었습니다.");
+      return response.data;
+    } else {
+      toast.error("회원가입에 실패했습니다.");
+      return null;
+    }
+  } catch (error) {
+    console.error("회원가입 중 오류 발생: ", error);
+    toast.error("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+    return null;
   }
 };
