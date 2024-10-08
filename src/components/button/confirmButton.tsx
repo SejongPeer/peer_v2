@@ -13,9 +13,9 @@ interface ButtonProps {
 }
 
 export const ConfirmButton = ({ 
-    width='327px',
+    width='100%',
     height='52px', 
-    text='오류', 
+    text='확인', 
     textcolor=`${COLORS.back2}`, 
     backgroundcolor=`${COLORS.disabled}`,
     borderradius='50px',
@@ -39,13 +39,15 @@ export const ConfirmButton = ({
 
 const ButtonWrapper = styled.button<ButtonProps>`
     width: ${(props) => props.width};
+    max-width: 398px;
     height: ${(props) => props.height};
     color: ${(props) => props.textcolor};
     background-color: ${(props) => props.backgroundcolor};
     border-radius: ${(props) => props.borderradius};
     border: ${(props) => props.border};
     cursor: pointer;
-    display: inline-block;
+    display: block;
     text-align: center;
     padding: 14px 0;
+    margin: auto;
 `;
