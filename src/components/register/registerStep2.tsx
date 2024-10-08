@@ -1,62 +1,64 @@
 import styled from "styled-components";
 import { COLORS } from "../../theme";
-import { useState } from "react";
 import { authenticateSejongUser } from "../../services/apis/user.service";
 import { useNavigate } from "react-router-dom";
 import { Body2R, buttonStyle, Head2 } from "../../styles/global-styles";
 import { toast } from "sonner";
 
-export const RegisterStep2: React.FC = () => {
-  const [id, setId] = useState<string>("");
-  const [pw, setPw] = useState<string>("");
+import { useForm } from "react-hook-form";
+// import { useUserStore } from "../../store/useUserStore";
 
+export const RegisterStep2: React.FC = () => {
+  const { register, handleSubmit, setValue } = useForm({
+    defaultValues: {
+      id: "",
+      pw: "",
+      name: "",
+      grade: "",
+      studentId: "",
+    },
+  });
+
+  // const { setUserData } = useUserStore(); // Zustand에서 studentId와 setUserData 가져오기
   const navigate = useNavigate();
 
-  const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setId(value);
-    // console.log(value);
-    localStorage.setItem("studentId", value);
-  };
+  const onSubmit = async (data: any) => {
+    const { id, pw } = data;
 
-  const handleLogin = async () => {
+    // 입력한 studentId는 그대로 저장
+    localStorage.setItem("studentId", id);
+
     const result = await authenticateSejongUser(id, pw);
     console.log(result);
-    localStorage.setItem("studentId", id);
-    // 세종대학교 인증이 성공적으로 되었을 때만 studentId를 저장하고 다음 단계로 이동
+
+    localStorage.setItem("name", result.data.name);
+    localStorage.setItem("grade", result.data.grade);
+    navigate("/register?step=3-1");
+
     if (result) {
-      localStorage.setItem("studentId", id);
-      navigate("/register?step=3-1");
     } else {
-      // 인증 실패 시 다음 단계로 이동하지 않고, 에러 메시지를 표시합니다.
       toast.error("인증에 실패했습니다. 정보를 다시 확인해 주세요.");
     }
   };
 
   return (
     <Container>
-      <TermsContainer>
-        <TermsText>세종대학교 학생 인증</TermsText>
-        <Text>세종대학교 통합로그인을 통해 인증합니다</Text>
-        <Text>(세종대학교 포털 ID/Pw)</Text>
-      </TermsContainer>
-      <InputContainer>
-        <Id
-          placeholder="포털 로그인 아이디(학번)"
-          value={id}
-          onChange={handleIdChange}
-        />
-        <Pw
-          placeholder="포털 로그인 비밀번호"
-          type="password"
-          value={pw}
-          onChange={(e) => setPw(e.target.value)}
-        />
-        <Confirm onClick={handleLogin}>통합 로그인 인증</Confirm>
-        <Address href="http://portal.sejong.ac.kr" target="_blank">
-          http://portal.sejong.ac.kr
-        </Address>
-      </InputContainer>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TermsContainer>
+          <TermsText>세종대학교 학생 인증</TermsText>
+          <Text>세종대학교 통합로그인을 통해 인증합니다</Text>
+          <Text>(세종대학교 포털 ID/Pw)</Text>
+        </TermsContainer>
+        <InputContainer>
+          <Id placeholder="포털 로그인 아이디(학번)" {...register("id")} />
+          <Pw
+            placeholder="포털 로그인 비밀번호"
+            type="password"
+            {...register("pw")}
+          />
+          <Confirm type="submit">통합 로그인 인증</Confirm>
+        </InputContainer>
+      </form>
     </Container>
   );
 };
@@ -108,15 +110,6 @@ const Pw = styled.input`
 const Confirm = styled.button`
   ${buttonStyle}
   margin-top: 20px;
-`;
-
-const Address = styled.a`
-  display: flex;
-  justify-content: center;
-  text-decoration: underline;
-  color: ${COLORS.font2};
-  font-size: 14px;
-  margin-top: 8px;
 `;
 
 export default RegisterStep2;

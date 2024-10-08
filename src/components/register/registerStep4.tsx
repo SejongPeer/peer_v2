@@ -1,58 +1,44 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import styled from "styled-components";
-import { signUpStep4Schema } from "../../lib/schema/auth.schema";
 import GenderToggleButton from "./genderToggleButton";
 import MajorDropDown from "./majorDropDown";
 import { toast } from "sonner";
 import { COLORS } from "../../theme";
 import { Body3Sb, buttonStyle, Head2 } from "../../styles/global-styles";
 import { useNavigate } from "react-router-dom";
-import { checkNicknameAvailability } from "../../services/apis/user.service";
-
-// 타입 정의
-type SignUpStep4FormData = {
-  nickname: string;
-  kakaoId: string;
-  phoneNumber: string;
-  gender: "남성" | "여성";
-  college: string;
-  major: string;
-  subCollege?: string;
-  subMajor?: string;
-};
+import {
+  checkNicknameAvailability,
+  registerUser,
+} from "../../services/apis/user.service";
 
 export const RegisterStep4 = () => {
   const navigate = useNavigate();
 
-  const {
-    handleSubmit,
-    register,
-    getValues,
-    setValue, // 로컬 스토리지에서 데이터를 불러올 때 사용
-    formState: { errors },
-  } = useForm<SignUpStep4FormData>({
-    resolver: zodResolver(signUpStep4Schema),
-  });
+  // Zustand에서 전역 상태 데이터를 가져옴
+  // const { name, studentId, grade, account, password, passwordCheck } =
+  //   useUserStore();
 
+  // useState로 입력값 관리
+  const [nickname, setNickname] = useState("");
+  const [kakaoId, setKakaoId] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [gender, setGender] = useState<"MALE" | "FEMALE">("MALE");
+  const [subCollege, setSubCollege] = useState("");
+  const [subMajor, setSubMajor] = useState("");
   const [isMinorChecked, setIsMinorChecked] = useState(false);
   const [_isNicknameAvailable, setIsNicknameAvailable] = useState(false);
 
-  // 컴포넌트가 마운트될 때 로컬 스토리지에서 데이터를 불러옴
-  useEffect(() => {
-    const savedCollege = localStorage.getItem("college");
-    const savedMajor = localStorage.getItem("major");
-    const savedGender = localStorage.getItem("gender");
-
-    if (savedCollege) setValue("college", savedCollege);
-    if (savedMajor) setValue("major", savedMajor);
-    if (savedGender) setValue("gender", savedGender as "남성" | "여성");
-  }, [setValue]);
+  const account = localStorage.getItem("account");
+  const password = localStorage.getItem("password");
+  const passwordCheck = localStorage.getItem("passwordCheck");
+  const grade = localStorage.getItem("grade");
+  const studentId = localStorage.getItem("studentId");
+  const college = localStorage.getItem("college");
+  const major = localStorage.getItem("major");
+  const name = localStorage.getItem("name");
 
   // 닉네임 중복 확인
   const handleCheckNickname = async () => {
-    const nickname = getValues("nickname");
     if (nickname) {
       const isAvailable = await checkNicknameAvailability(nickname);
       if (isAvailable) {
@@ -69,84 +55,71 @@ export const RegisterStep4 = () => {
     }
   };
 
-  const onSubmit = (data: SignUpStep4FormData) => {
-    console.log("onSubmit 함수가 호출되었습니다.", data);
+  // 회원가입 요청을 위한 최종 데이터 전송
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    // 로컬 스토리지에서 데이터를 불러옴
-    const account = localStorage.getItem("회원가입_아이디");
-    const password = localStorage.getItem("회원가입_비밀번호");
-    const passwordCheck = localStorage.getItem("회원가입_비밀번호확인");
-    const name = localStorage.getItem("name");
-    const studentId = localStorage.getItem("studentId");
-    const grade = localStorage.getItem("grade");
-    const major = localStorage.getItem("major");
-    const gender = localStorage.getItem("gender");
-    const college = localStorage.getItem("college");
-    const subCollege = isMinorChecked
-      ? localStorage.getItem("subCollege")
-      : null;
-    const subMajor = isMinorChecked ? localStorage.getItem("subMajor") : null;
-
-    // 최종 데이터를 통합
+    // 최종 데이터 구성
     const finalFormData = {
       account,
       password,
       passwordCheck,
       name,
       studentId,
-      college: college || "",
-      major: major || "",
-      subCollege: subCollege || "",
-      subMajor: subMajor || "",
-      grade: grade ? Number(grade) : null,
-      nickname: data.nickname,
-      kakaoId: data.kakaoId,
-      phoneNumber: data.phoneNumber,
+      college,
+      major,
+      subCollege: isMinorChecked && subCollege ? subCollege : null, // 값이 없으면 null로 처리
+      subMajor: isMinorChecked && subMajor ? subMajor : null, // 값이 없으면 null로 처리
+      grade: Number(grade),
       gender,
+      phoneNumber,
+      nickname,
+      kakaoAccount: kakaoId,
     };
 
-    console.log("최종 Form Data:", finalFormData);
+    // 회원가입 API 호출
+    const response = await registerUser(finalFormData);
 
-    // 최종 데이터를 서버로 제출
-    // await submitFormDataToServer(finalFormData);
-
-    toast.success("회원가입 정보가 저장되었습니다.");
-    navigate("/login");
+    if (response) {
+      toast.success("회원가입이 완료되었습니다.");
+      navigate("/login");
+    }
   };
 
   return (
     <Container>
       <Text>매칭 필요정보</Text>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={onSubmit}>
         <LabelContainer>
           <Label>닉네임</Label>
           <InputContainer>
-            <Input {...register("nickname")} placeholder="닉네임 입력" />
+            <Input
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임 입력"
+            />
             <CheckButton type="button" onClick={handleCheckNickname}>
               중복확인
             </CheckButton>
           </InputContainer>
-          {errors.nickname && <Warning>{errors.nickname.message}</Warning>}
         </LabelContainer>
 
         <LabelContainer>
           <Label>카카오톡 아이디</Label>
           <Input
-            {...register("kakaoId")}
+            value={kakaoId}
+            onChange={(e) => setKakaoId(e.target.value)}
             placeholder="카카오톡 아이디 입력 (매칭 상대방에게 전달)"
           />
-          {errors.kakaoId && <Warning>{errors.kakaoId.message}</Warning>}
         </LabelContainer>
 
         <LabelContainer>
           <Label>전화번호</Label>
           <Input
-            {...register("phoneNumber")}
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="전화번호 - 없이 입력"
           />
-          {errors.phoneNumber && (
-            <Warning>{errors.phoneNumber.message}</Warning>
-          )}
         </LabelContainer>
 
         <LabelContainer>
@@ -177,12 +150,10 @@ export const RegisterStep4 = () => {
             <LabelContainer>
               <Label>부전공 단과대 선택</Label>
               <Input
-                {...register("subCollege")}
+                value={subCollege}
+                onChange={(e) => setSubCollege(e.target.value)}
                 placeholder="부전공 단과대 입력"
               />
-              {errors.subCollege && (
-                <Warning>{errors.subCollege.message}</Warning>
-              )}
             </LabelContainer>
             <LabelContainer>
               <MajorDropDown />
@@ -260,11 +231,6 @@ const CheckButton = styled.button`
   border-radius: 35px;
   cursor: pointer;
   width: 80px;
-`;
-
-const Warning = styled.p`
-  color: ${COLORS.main};
-  margin-bottom: 2px;
 `;
 
 const NextBtn = styled.button`

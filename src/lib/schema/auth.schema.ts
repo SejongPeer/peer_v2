@@ -69,7 +69,7 @@ export const signUpStep4Schema = z.object({
     .string()
     .regex(/^010\d{8}$/, "전화번호는 010으로 시작하는 11자리 숫자여야 합니다.")
     .nonempty("전화번호를 입력해주세요."),
-  gender: z.enum(["남성", "여성"]),
+  gender: z.enum(["MALE", "FEMALE"]),
   college: z
     .string()
     .regex(/^[가-힣]+$/, "단과대는 한글만 포함할 수 있습니다.")
