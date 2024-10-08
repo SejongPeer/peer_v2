@@ -11,6 +11,10 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.1",
+    "@mui/styled-engine-sc": "^6.1.1",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-toast": "^1.2.1",
     "axios": "^1.7.7",
