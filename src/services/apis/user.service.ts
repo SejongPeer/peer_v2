@@ -86,7 +86,7 @@ export const checkNicknameAvailability = async (
 };
 
 // 회원가입 API 요청 함수
-export const registerUser = async (formData: any) => {
+export const registerUser = async (formData: object) => {
   try {
     const response = await axiosInstance.post("/member/sign-up", formData);
 
