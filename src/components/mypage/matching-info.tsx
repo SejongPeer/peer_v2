@@ -1,10 +1,7 @@
 import styled from "styled-components";
 import { COLORS } from "../../theme";
-interface MatchingInfoProps {
-  title: string;
-  explain: string;
-  img?: string;
-}
+//타입
+import { MatchingInfoProps } from "../../types/mypage/mypage";
 
 export const MatchingInfo: React.FC<MatchingInfoProps> = ({
   title,

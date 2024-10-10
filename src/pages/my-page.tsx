@@ -9,9 +9,9 @@ import { useNavigate } from "react-router-dom";
 import buddyImg from "../assets/images/buddyImg.png";
 import honbabImg from "../assets/images/honbabImg.png";
 
-interface BtnProps {
-  btnState: string; // btnState prop에 대한 타입 정의
-}
+//타입
+import { BtnProps } from "../types/mypage/css";
+
 export const MyPage = () => {
   const navigate = useNavigate();
   const moveToEdit = () => {

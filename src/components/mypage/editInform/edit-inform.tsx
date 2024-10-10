@@ -1,11 +1,8 @@
 import styled from "styled-components";
 import { COLORS } from "../../../theme";
 
-interface EditInformProps {
-  disabledProps?: boolean;
-  title: string;
-  cont: string;
-}
+//타입
+import { EditInformProps } from "../../../types/mypage/mypage";
 
 export const EditInform: React.FC<EditInformProps> = ({
   disabledProps,

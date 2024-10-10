@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { COLORS } from "../../theme";
-interface GuideInfo {
-  title: string;
-  addCon: string;
-}
+
+//타입
+import { GuideInfo } from "../../types/mypage/mypage";
+
 export const Guide: React.FC<GuideInfo> = ({ title, addCon }) => {
   return (
     <Box>
