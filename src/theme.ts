@@ -1,6 +1,9 @@
 // theme.js
 export const COLORS = {
   main: "#FF4B4B",
+  sub1: "#D31D1D",
+  sub2: "#FFE9E9",
+  sub3: "#FAF4F4",
   sub: "#FF7474",
   back1: "#FAFAFA",
   back2: "#FFFFFF",
@@ -10,7 +13,9 @@ export const COLORS = {
   font2: "#555555",
   font3: "#777777",
   font4: "#999999",
-  white: "#fff",
   black: "#111",
+  regular: "#E5E1E1",
+  light: "#F2F1F1",
+  white: "#fff",
   disabled: "#CDCACA",
 };
