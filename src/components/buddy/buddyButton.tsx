@@ -6,15 +6,13 @@ import unchecked from '../../assets/images/unfilledCheck.png';
 
 interface ButtonProps {
     text?: string;
-    textChecked?: string;
     ischecked?: boolean;
     onClick?: () => void;
 }
 
 export const BuddyButton = ({ 
     text='오류', 
-    textChecked='오류',
-    ischecked=false ,
+    ischecked=false,
     onClick
 }: ButtonProps) => {
     return (
@@ -22,7 +20,7 @@ export const BuddyButton = ({
         <ButtonWrapperChecked 
             onClick={onClick}
         >
-            {textChecked}
+            {text}
         </ButtonWrapperChecked>
         :
         <ButtonWrapper

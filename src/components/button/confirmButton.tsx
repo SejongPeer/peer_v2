@@ -49,5 +49,5 @@ const ButtonWrapper = styled.button<ButtonProps>`
     display: block;
     text-align: center;
     padding: 14px 0;
-    margin: auto;
+    margin-top: auto;
 `;
