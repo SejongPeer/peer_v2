@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { BuddyStore } from "../../../store/useBuddyStore";
 
 import { COLORS } from "../../../theme";
 import { 
-    BuddyContainer,
-    BuddyContainer2,
-    InfoContainer,
-    MatchingTitle,
-    MatchingInfo,
-    ButtonContainer,
+  BuddyContainer,
+  BuddyContainer2,
+  InfoContainer,
+  MatchingTitle,
+  MatchingInfo,
+  ButtonContainer,
 } from "../../../styles/buddy-styles";
 
 import { BuddyHeader } from "../../header/buddyHeader";
@@ -16,24 +18,57 @@ import { BuddyButton } from "../buddyButton";
 import { ConfirmButton } from "../../button/confirmButton";
 
 export const BuddyGrade = () => {
-    const [is1st, setIs1st] = useState(false);
-    const [is2nd, setIs2nd] = useState(false);
-    const [is3rd, setIs3rd] = useState(false);
-    const [is4th, setIs4th] = useState(false);
+  const { grade, setGrade } = BuddyStore();
+  const [is1st, setIs1st] = useState(false);
+  const [is2nd, setIs2nd] = useState(false);
+  const [is3rd, setIs3rd] = useState(false);
+  const [is4th, setIs4th] = useState(false);
 
-    // 범위 선택 핸들러
-    const firstHandler = () => {
-        setIs1st(!is1st);
+  useEffect(() => {
+    if (grade.includes("GRADE_1")) {
+      setIs1st(true);
+    } 
+    if (grade.includes("GRADE_2")) {
+      setIs2nd(true);
+    } 
+    if (grade.includes("GRADE_3")) {
+      setIs3rd(true);
+    } 
+    if (grade.includes("GRADE_4")) {
+      setIs4th(true);
+    } 
+  }, [grade]);
+
+  // 범위 선택 핸들러
+  const firstHandler = () => {
+    setIs1st(!is1st);
+    if (!grade.includes("GRADE_1")) {
+      const typeArr: string[] = [...grade, "GRADE_1"];
+      setGrade(typeArr);
     }
-    const secondHandler = () => {
-        setIs2nd(!is2nd);
+  }
+  const secondHandler = () => {
+    setIs2nd(!is2nd);
+    if (!grade.includes("GRADE_2")) {
+      const typeArr: string[] = [...grade, "GRADE_2"];
+      setGrade(typeArr);
     }
-    const thirdHandler = () => {
-        setIs3rd(!is3rd);
+  }
+  const thirdHandler = () => {
+    setIs3rd(!is3rd);
+    if (!grade.includes("GRADE_3")) {
+      const typeArr: string[] = [...grade, "GRADE_3"];
+      setGrade(typeArr);
     }
-    const fourthHandler = () => {
-        setIs4th(!is4th);
+  }
+  const fourthHandler = () => {
+    setIs4th(!is4th);
+    if (!grade.includes("GRADE_4")) {
+      const typeArr: string[] = [...grade, "GRADE_4"];
+      setGrade(typeArr);
     }
+  }
+  console.log(grade)
 
     // 다음 단계
     const navigate = useNavigate();

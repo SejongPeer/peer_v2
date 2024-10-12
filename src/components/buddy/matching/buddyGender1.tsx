@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { BuddyStore } from "../../../store/useBuddyStore";
 
 import { COLORS } from "../../../theme";
 import { 
@@ -16,61 +18,74 @@ import { BuddyButton } from "../buddyButton";
 import { ConfirmButton } from "../../button/confirmButton";
 
 export const BuddyGender = () => {
-    const [isSame, setIsSame] = useState(false);
-    const [isAny, setIsAny] = useState(false);
+  const { gender, setGender } = BuddyStore();
+  const [isSame, setIsSame] = useState(false);
+  const [isAny, setIsAny] = useState(false);
 
-    // 동성 선택
-    const ClickSameHandler = () => {
-        setIsSame(!isSame);
-        if(isAny) {
-            setIsAny(false);
-        }
+  // 값 유지
+  useEffect(() => {
+    if (gender === "SAME") {
+      setIsSame(true)
+    } else if (gender === "NO_MATTER") {
+      setIsAny(true);
     }
-    // 상관없음 선택
-    const ClickAnyHandler = () => {
-        setIsAny(!isAny);
-        if(isSame) {
-            setIsSame(false);
-        }
+  }, [gender]);
+
+  // 동성 선택
+  const ClickSameHandler = () => {
+    setIsSame(!isSame);
+    setGender("SAME");
+    if(isAny) {
+      setIsAny(false);
     }
-
-    // 다음 단계
-    const navigate = useNavigate();
-    const NextStepHandler = () => {
-        navigate("/buddy?step=2");
+  }
+  // 상관없음 선택
+  const ClickAnyHandler = () => {
+    setIsAny(!isAny);
+    setGender("NO_MATTER");
+    if(isSame) {
+      setIsSame(false);
     }
+  }
+  console.log("성별: ", gender);
 
-    return (
-        <BuddyContainer>
-            <BuddyHeader />
-            <BuddyContainer2>
+  // 다음 단계
+  const navigate = useNavigate();
+  const NextStepHandler = () => {
+      navigate("/buddy?step=2");
+  }
 
-                    <InfoContainer>
-                        <MatchingTitle>버디 성별 선택</MatchingTitle>
-                        <MatchingInfo>이성과의 매칭이 부담스러우신 분들은</MatchingInfo>
-                        <MatchingInfo>'동성' 옵션을 선택해 주세요!</MatchingInfo>
-                    </InfoContainer>
+  return (
+      <BuddyContainer>
+          <BuddyHeader />
+          <BuddyContainer2>
 
-                    <ButtonContainer>
-                        <BuddyButton 
-                            text={'동성'}
-                            ischecked={isSame}
-                            onClick={ClickSameHandler}
-                        />
-                        <BuddyButton 
-                            text={'상관없음(이성 포함)'}
-                            ischecked={isAny}
-                            onClick={ClickAnyHandler}
-                        />
-                    </ButtonContainer>
+                  <InfoContainer>
+                      <MatchingTitle>버디 성별 선택</MatchingTitle>
+                      <MatchingInfo>이성과의 매칭이 부담스러우신 분들은</MatchingInfo>
+                      <MatchingInfo>'동성' 옵션을 선택해 주세요!</MatchingInfo>
+                  </InfoContainer>
 
-                    <ConfirmButton 
-                        text={'다음'}
-                        backgroundcolor={(isSame || isAny) ? `${COLORS.main}` : `${COLORS.disabled}`}
-                        onClick={(isSame || isAny) ? NextStepHandler : () => {}}
-                    />
+                  <ButtonContainer>
+                      <BuddyButton 
+                          text={'동성'}
+                          ischecked={isSame}
+                          onClick={ClickSameHandler}
+                      />
+                      <BuddyButton 
+                          text={'상관없음(이성 포함)'}
+                          ischecked={isAny}
+                          onClick={ClickAnyHandler}
+                      />
+                  </ButtonContainer>
 
-            </BuddyContainer2>
-        </BuddyContainer>
-    );
+                  <ConfirmButton 
+                      text={'다음'}
+                      backgroundcolor={(isSame || isAny) ? `${COLORS.main}` : `${COLORS.disabled}`}
+                      onClick={(isSame || isAny) ? NextStepHandler : () => {}}
+                  />
+
+          </BuddyContainer2>
+      </BuddyContainer>
+  );
 }

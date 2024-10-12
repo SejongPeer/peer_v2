@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { BuddyStore } from "../../../store/useBuddyStore";
 
 import { COLORS } from "../../../theme";
 import { 
@@ -18,38 +20,59 @@ import { ConfirmButton } from "../../button/confirmButton";
 import styled from "styled-components";
 
 export const BuddyMajor = () => {
-    const [isMajor, setIsMajor] = useState(false);
-    const [isCollege, setIsCollege] = useState(false);
-    const [isAll, setIsAll] = useState(false);
+  const { major, setMajor, subMajor, setSubMajor } = BuddyStore();
+  const [isMajor, setIsMajor] = useState(false);
+  const [isCollege, setIsCollege] = useState(false);
+  const [isAll, setIsAll] = useState(false);
 
-    // 범위 선택 핸들러
-    const majorHandler = () => {
-        setIsMajor(!isMajor);
-        if(isCollege || isAll) {
-            setIsCollege(false);
-            setIsAll(false);
-        }
+  // 값 유지
+  useEffect(() => {
+    if (major === "SAME_COLLEGE") {
+      setIsCollege(true)
+    } else if (major === "SAME_DEPARTMENT") {
+      setIsMajor(true);
+    } else if (major === "NO_MATTER") {
+      setIsAll(true);
     }
-    const collegeHandler = () => {
-        setIsCollege(!isCollege);
-        if(isMajor || isAll) {
-            setIsMajor(false);
-            setIsAll(false);
-        }
-    }
-    const allHandler = () => {
-        setIsAll(!isAll);
-        if(isMajor || isCollege) {
-            setIsMajor(false);
-            setIsCollege(false);
-        }
-    }
+  }, [major]);
 
-    // 다음 단계
-    const navigate = useNavigate();
-    const NextStepHandler = () => {
-        navigate("/buddy?step=3");
+  // 범위 선택 핸들러
+  const majorHandler = () => {
+    setIsMajor(!isMajor);
+    setMajor("SAME_DEPARTMENT");
+    if(isCollege || isAll) {
+      setIsCollege(false);
+      setIsAll(false);
     }
+  }
+  const collegeHandler = () => {
+    setIsCollege(!isCollege);
+    setMajor("SAME_COLLEGE");
+    if(isMajor || isAll) {
+      setIsMajor(false);
+      setIsAll(false);
+    }
+  }
+  const allHandler = () => {
+    setIsAll(!isAll);
+    setMajor("NO_MATTER");
+    if(isMajor || isCollege) {
+      setIsMajor(false);
+      setIsCollege(false);
+    }
+  }
+  
+  const subCheckedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSubMajor(e.target.checked);
+  }
+  console.log("학과: ", major);
+  console.log("복수 전공: ", subMajor);
+  
+  // 다음 단계
+  const navigate = useNavigate();
+  const NextStepHandler = () => {
+    navigate("/buddy?step=3");
+  }
 
     return (
         <BuddyContainer>
@@ -82,7 +105,12 @@ export const BuddyMajor = () => {
                 <SecondMajorContainer>
                     <SecondMajorText>*복수/부전공 학과 기준으로 찾기</SecondMajorText>
 
-                    <Toggle type="checkbox" id="toggle"/>
+                    <Toggle 
+                    type="checkbox" 
+                    id="toggle"
+                    checked={subMajor}
+                    onChange={subCheckedHandler}
+                    />
                     <ToggleLabel htmlFor="toggle" />
 
                 </SecondMajorContainer>

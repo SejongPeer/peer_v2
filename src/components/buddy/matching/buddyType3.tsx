@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { BuddyStore } from "../../../store/useBuddyStore";
 
 import { COLORS } from "../../../theme";
 import { 
@@ -16,26 +18,52 @@ import { BuddyButton } from "../buddyButton";
 import { ConfirmButton } from "../../button/confirmButton";
 
 export const BuddyType = () => {
-    const [isSenior, setIsSenior] = useState(false);
-    const [isPeer, setIsPeer] = useState(false);
-    const [isJunior, setIsJunior] = useState(false);
+  const { type, setType } = BuddyStore();
+  const [isSenior, setIsSenior] = useState(false);
+  const [isPeer, setIsPeer] = useState(false);
+  const [isJunior, setIsJunior] = useState(false);
 
-    // 범위 선택 핸들러
-    const seniorHandler = () => {
-        setIsSenior(!isSenior);
-    }
-    const peerHandler = () => {
-        setIsPeer(!isPeer);
-    }
-    const juniorHandler = () => {
-        setIsJunior(!isJunior);
-    }
+  useEffect(() => {
+    if (type.includes("SENIOR")) {
+      setIsSenior(true);
+    } 
+    if (type.includes("MATE")) {
+      setIsPeer(true);
+    } 
+    if (type.includes("JUNIOR")) {
+      setIsJunior(true);
+    } 
+  }, [type]);
 
-    // 다음 단계
-    const navigate = useNavigate();
-    const NextStepHandler = () => {
-        navigate("/buddy?step=4");
+  // 범위 선택 핸들러
+  const seniorHandler = () => {
+    setIsSenior(!isSenior);
+    if (!type.includes("SENIOR")) {
+      const typeArr: string[] = [...type, "SENIOR"];
+      setType(typeArr);
     }
+  }
+  const peerHandler = () => {
+    setIsPeer(!isPeer);
+    if (!type.includes("MATE")) {
+      const typeArr: string[] = [...type, "MATE"];
+      setType(typeArr);
+    }
+  }
+  const juniorHandler = () => {
+    setIsJunior(!isJunior);
+    if (!type.includes("JUNIOR")) {
+      const typeArr: string[] = [...type, "JUNIOR"];
+      setType(typeArr);
+    }
+  }
+  console.log("버디 종류", type);
+
+  // 다음 단계
+  const navigate = useNavigate();
+  const NextStepHandler = () => {
+    navigate("/buddy?step=4");
+  }
 
     return (
         <BuddyContainer>

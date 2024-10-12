@@ -22,6 +22,7 @@ export const BuddyStart = () => {
     // 조건 선택 페이지 이동
     const navigateHandler = () => {
         navigate('/buddy?step=1');
+        // 로그인 하면 이동할 수 있도록 했는데 테스트 끝나면 주석해제 예정입니다~
         // if(token) {
         //     navigate('/buddy?step=1');
         // } else {
