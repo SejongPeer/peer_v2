@@ -5,12 +5,12 @@ import { BuddyStore } from "../../../store/useBuddyStore";
 
 import { COLORS } from "../../../theme";
 import { 
-    BuddyContainer,
-    BuddyContainer2,
-    InfoContainer,
-    MatchingTitle,
-    MatchingInfo,
-    ButtonContainer
+  BuddyContainer,
+  BuddyContainer2,
+  InfoContainer,
+  MatchingTitle,
+  MatchingInfo,
+  ButtonContainer
 } from "../../../styles/buddy-styles";
 
 import { BuddyHeader } from "../../header/buddyHeader";
@@ -56,36 +56,36 @@ export const BuddyGender = () => {
   }
 
   return (
-      <BuddyContainer>
-          <BuddyHeader />
-          <BuddyContainer2>
+    <BuddyContainer>
+      <BuddyHeader />
+      <BuddyContainer2>
 
-                  <InfoContainer>
-                      <MatchingTitle>버디 성별 선택</MatchingTitle>
-                      <MatchingInfo>이성과의 매칭이 부담스러우신 분들은</MatchingInfo>
-                      <MatchingInfo>'동성' 옵션을 선택해 주세요!</MatchingInfo>
-                  </InfoContainer>
+        <InfoContainer>
+          <MatchingTitle>버디 성별 선택</MatchingTitle>
+          <MatchingInfo>이성과의 매칭이 부담스러우신 분들은</MatchingInfo>
+          <MatchingInfo>'동성' 옵션을 선택해 주세요!</MatchingInfo>
+        </InfoContainer>
 
-                  <ButtonContainer>
-                      <BuddyButton 
-                          text={'동성'}
-                          ischecked={isSame}
-                          onClick={ClickSameHandler}
-                      />
-                      <BuddyButton 
-                          text={'상관없음(이성 포함)'}
-                          ischecked={isAny}
-                          onClick={ClickAnyHandler}
-                      />
-                  </ButtonContainer>
+        <ButtonContainer>
+          <BuddyButton 
+            text={'동성'}
+            ischecked={isSame}
+            onClick={ClickSameHandler}
+          />
+          <BuddyButton 
+            text={'상관없음(이성 포함)'}
+            ischecked={isAny}
+            onClick={ClickAnyHandler}
+          />
+        </ButtonContainer>
 
-                  <ConfirmButton 
-                      text={'다음'}
-                      backgroundcolor={(isSame || isAny) ? `${COLORS.main}` : `${COLORS.disabled}`}
-                      onClick={(isSame || isAny) ? NextStepHandler : () => {}}
-                  />
+        <ConfirmButton 
+            text={'다음'}
+            backgroundcolor={gender ? `${COLORS.main}` : `${COLORS.disabled}`}
+            onClick={gender ? NextStepHandler : () => {}}
+        />
 
-          </BuddyContainer2>
-      </BuddyContainer>
+      </BuddyContainer2>
+    </BuddyContainer>
   );
 }

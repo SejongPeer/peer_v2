@@ -12,6 +12,7 @@ import { BuddyContainer, BuddyContainer2, ApplicationContainer } from "../../sty
 // 이미지
 import startImg from '../../assets/images/buddyStart.svg';
 import nugul from '../../assets/images/nugul.svg';
+import { useEffect } from "react";
 
 export const BuddyStart = () => {
     const navigate = useNavigate();
@@ -30,6 +31,10 @@ export const BuddyStart = () => {
         //     navigate('/login');
         // }
     };
+
+    useEffect(() => {
+      
+    }, [])
 
     return (
         <BuddyContainer>

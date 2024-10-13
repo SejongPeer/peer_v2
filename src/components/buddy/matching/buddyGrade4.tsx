@@ -70,53 +70,53 @@ export const BuddyGrade = () => {
   }
   console.log(grade)
 
-    // 다음 단계
-    const navigate = useNavigate();
-    const NextStepHandler = () => {
-        navigate("/buddy?step=5");
-    }
+  // 다음 단계
+  const navigate = useNavigate();
+  const NextStepHandler = () => {
+      navigate("/buddy?step=5");
+  }
 
-    return (
-        <BuddyContainer>
-            <BuddyHeader/>
+  return (
+    <BuddyContainer>
+      <BuddyHeader/>
 
-            <BuddyContainer2>
-                <InfoContainer>
-                    <MatchingTitle>버디 학년 선택(복수선택 가능)</MatchingTitle>
-                    <MatchingInfo>입학년도(학번 앞 두자리)를 기준으로</MatchingInfo>
-                    <MatchingInfo>선배·후배·동기 중 원하는 조건을 선택하세요!</MatchingInfo>
-                </InfoContainer>
+      <BuddyContainer2>
+        <InfoContainer>
+          <MatchingTitle>버디 학년 선택(복수선택 가능)</MatchingTitle>
+          <MatchingInfo>선호하는 버디의 학년을 선택해주세요!</MatchingInfo>
+          <MatchingInfo>초과학기, 졸업유예 등은 4학년에 포함됩니다.</MatchingInfo>
+        </InfoContainer>
 
-                <ButtonContainer>
-                    <BuddyButton 
-                        text={'1학년'}
-                        ischecked={is1st}
-                        onClick={firstHandler}
-                    />
-                    <BuddyButton 
-                        text={'2학년'}
-                        ischecked={is2nd}
-                        onClick={secondHandler}
-                    />
-                    <BuddyButton 
-                        text={'3학년'}
-                        ischecked={is3rd}
-                        onClick={thirdHandler}
-                    />
-                    <BuddyButton 
-                        text={'4학년'}
-                        ischecked={is4th}
-                        onClick={fourthHandler}
-                    />
-                </ButtonContainer>
+        <ButtonContainer>
+          <BuddyButton 
+            text={'1학년'}
+            ischecked={is1st}
+            onClick={firstHandler}
+          />
+          <BuddyButton 
+            text={'2학년'}
+            ischecked={is2nd}
+            onClick={secondHandler}
+          />
+          <BuddyButton 
+            text={'3학년'}
+            ischecked={is3rd}
+            onClick={thirdHandler}
+          />
+          <BuddyButton 
+            text={'4학년'}
+            ischecked={is4th}
+            onClick={fourthHandler}
+          />
+        </ButtonContainer>
 
-                    <ConfirmButton 
-                        text={'다음'}
-                        backgroundcolor={(is1st || is2nd || is3rd || is4th) ? `${COLORS.main}` : `${COLORS.disabled}`}
-                        onClick={(is1st || is2nd || is3rd || is4th) ? NextStepHandler : () => {}}
-                    />
+        <ConfirmButton 
+          text={'다음'}
+          backgroundcolor={(is1st || is2nd || is3rd || is4th) ? `${COLORS.main}` : `${COLORS.disabled}`}
+          onClick={(is1st || is2nd || is3rd || is4th) ? NextStepHandler : () => {}}
+        />
 
-            </BuddyContainer2>
-        </BuddyContainer>
-    );
+      </BuddyContainer2>
+    </BuddyContainer>
+  );
 }
