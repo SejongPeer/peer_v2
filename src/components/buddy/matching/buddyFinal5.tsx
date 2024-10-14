@@ -15,6 +15,7 @@ import {
 import { BuddyHeader } from "../../header/buddyHeader";
 import { ConfirmButton } from "../../button/confirmButton";
 import styled from "styled-components";
+import { registerBuddy } from "../../../services/apis/buddy.service";
 export const BuddyFinal = () => {
   // 값 가져오기
   const { gender, major, subMajor, type, grade } = BuddyStore();
@@ -65,6 +66,24 @@ export const BuddyFinal = () => {
   // 폰번호에 하이픈 넣기
   if (phoneNumber) {
     phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  }
+
+  const buddyRegisterHandler = async() => {
+    // 전달 데이터
+    const buddyData = {
+      "genderOption": gender,
+      "classTypeOption": type,
+      "gradeOption": grade,
+      "collegeMajorOption": major,
+      "isSubMajor": subMajor,
+    }
+
+    const response = await registerBuddy(buddyData);
+
+    // 버디등록 성공 시
+    if (response) {
+      navigate("/");
+    }
   }
 
   return (
@@ -123,6 +142,7 @@ export const BuddyFinal = () => {
         <ConfirmButton 
           text={'다음'}
           backgroundcolor={`${COLORS.main}`}
+          onClick={buddyRegisterHandler}
         />
       </BuddyContainer2>
     </BuddyContainer>
