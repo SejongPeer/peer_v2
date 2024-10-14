@@ -1,19 +1,7 @@
 import { create } from "zustand";
+import {  SetBuddyMatchingType } from "../types/buddy/buddyType";
 
-interface Buddy {
-  gender: string;
-  major: string;
-  subMajor: boolean;
-  type: string[];
-  grade: string[];
-  setGender: (gender: string) => void;
-  setMajor: (major: string) => void;
-  setSubMajor: (subMajor: boolean) => void;
-  setType: (type: string[]) => void;
-  setGrade: (grade: string[]) => void;
-}
-
-export const BuddyStore = create<Buddy>(set => ({
+export const BuddyStore = create<SetBuddyMatchingType>(set => ({
   gender: '',
   major: '',
   subMajor: false,
