@@ -9,15 +9,20 @@ export const axiosInstance = axios.create({
 // 요청 인터셉터 설정
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 요청 시 Authorization 헤더에 토큰을 추가
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const accessToken = window.localStorage.getItem("accessToken");
+    const refreshToken = window.localStorage.getItem("refreshToken");
+
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
+
+    if (refreshToken) {
+      config.headers["Refresh-Token"] = refreshToken;
+    }
+
     return config;
   },
   (error) => {
-    // 요청 중 오류가 발생한 경우
     console.error("[AXIOS_REQUEST_ERROR]: ", error);
     return Promise.reject(error);
   }

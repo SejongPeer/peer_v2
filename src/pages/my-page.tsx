@@ -5,18 +5,32 @@ import { MatchingInfo } from "../components/mypage/matching-info";
 import { Guide } from "../components/mypage/guide";
 import { COLORS } from "../theme";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-import buddyImg from "../assets/images/buddyImg.png";
-import honbabImg from "../assets/images/honbabImg.png";
-
+import buddyImg from "../assets/images/main/buddy_character.png";
+import honbabImg from "../assets/images/main/honbob_character.png";
+import { getMypageData } from "../services/apis/mypage";
 //타입
 import { BtnProps } from "../types/mypage/css";
+import { MyPageResponse } from "../types/mypage/mypage";
 
 export const MyPage = () => {
+  const [data, setData] = useState<MyPageResponse | null>(null);
   const navigate = useNavigate();
   const moveToEdit = () => {
     navigate("/my-page/edit");
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getMypageData();
+      if (response) {
+        setData(response);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Container>
       <Header />
@@ -45,9 +59,9 @@ export const MyPage = () => {
         <Section>
           <Title>내 정보</Title>
           <MyInfoBox onClick={moveToEdit}>
-            <Name>송성환</Name>
+            <Name>{data && data.name}</Name>
             <Info>
-              소프트웨어학과 <span>• 3학년</span>
+              {data && data.major} <span>• {data && data.grade}학년</span>
             </Info>
           </MyInfoBox>
         </Section>
