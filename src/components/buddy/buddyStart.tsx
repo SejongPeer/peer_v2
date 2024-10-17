@@ -1,15 +1,44 @@
 import styled from "styled-components";
-
-import { ConfirmButton } from "../button/confirmButton";
-import { SubHeader } from "../subHeader";
 import { COLORS } from "../../theme";
+
+// 컴포넌트
+import { ConfirmButton } from "../button/confirmButton";
+import { BuddyHeader } from "../header/buddyHeader";
+import { useNavigate } from "react-router-dom";
+
+// styled-components
+import { BuddyContainer, BuddyContainer2, ApplicationContainer } from "../../styles/buddy-styles";
+
+// 이미지
 import startImg from '../../assets/images/buddyStart.svg';
 import nugul from '../../assets/images/nugul.svg';
+import { useEffect } from "react";
 
 export const BuddyStart = () => {
+    const navigate = useNavigate();
+
+    // localStorage에서 토큰 가져오기
+    // const token = localStorage.getItem("accessToken");
+
+    // 조건 선택 페이지 이동
+    const navigateHandler = () => {
+        navigate('/buddy?step=1');
+        // 로그인 하면 이동할 수 있도록 했는데 테스트 끝나면 주석해제 예정입니다~
+        // if(token) {
+        //     navigate('/buddy?step=1');
+        // } else {
+        //     alert('로그인이 필요한 서비스 입니다!');
+        //     navigate('/login');
+        // }
+    };
+
+    useEffect(() => {
+      
+    }, [])
+
     return (
         <BuddyContainer>
-            <SubHeader backgroundColor="#FAF5F5" text={""} />
+            <BuddyHeader />
             <BuddyContainer2>
             <StartImg src={startImg} />
 
@@ -36,25 +65,13 @@ export const BuddyStart = () => {
                     backgroundcolor= {COLORS.main}
                     borderradius='50px'
                     border='none'
+                    onClick={navigateHandler}
                 />
             </ApplicationContainer>
             </BuddyContainer2>
         </BuddyContainer>
     );
 }
-
-const BuddyContainer = styled.div`
-    max-width: 674px;
-    height: 100vh;
-    margin: auto;
-`;
-const BuddyContainer2 = styled.div`
-    width: 100%;
-    height: 94%;
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-`;
 
 const StartImg = styled.img`
     width: 100%;
@@ -89,13 +106,6 @@ const BuddyStartText2 = styled.p`
     line-height: 1.5;
 `;
 
-const ApplicationContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-top: auto;
-`;
 const ApplicationNum = styled.div`
     display: flex;
     align-items: center;
@@ -107,6 +117,6 @@ const ApplicationImg = styled.img`
     border-raidus: 12px;
 `;
 const ApplicationText = styled.p`
-    color: #111;
-    font-weight: 700;
+color: #111;
+font-weight: 700;
 `;
