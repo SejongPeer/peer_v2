@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { COLORS } from "../../theme";
 
+import { getBuddyUsers } from "../../services/apis/buddy.service";
+
 // 컴포넌트
 import { ConfirmButton } from "../button/confirmButton";
 import { BuddyHeader } from "../header/buddyHeader";
@@ -12,7 +14,7 @@ import { BuddyContainer, BuddyContainer2, ApplicationContainer } from "../../sty
 // 이미지
 import startImg from '../../assets/images/buddyStart.svg';
 import nugul from '../../assets/images/nugul.svg';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const BuddyStart = () => {
     const navigate = useNavigate();
@@ -32,8 +34,14 @@ export const BuddyStart = () => {
         // }
     };
 
+    const [users, setUsers] = useState<number | null>(null);
     useEffect(() => {
-      
+      const fetchUserCount = async () => {
+        const result = await getBuddyUsers();
+        setUsers(result); // 상태 업데이트
+      };
+  
+      fetchUserCount(); 
     }, [])
 
     return (
@@ -55,7 +63,7 @@ export const BuddyStart = () => {
             <ApplicationContainer>
                 <ApplicationNum>
                     <ApplicationImg src={nugul}/>
-                    <ApplicationText>216명의 학생들이 버디를 찾고 있어요!</ApplicationText>
+                    <ApplicationText>{users}명의 학생들이 버디를 찾고 있어요!</ApplicationText>
                 </ApplicationNum>
                 <ConfirmButton 
                     width='100%'

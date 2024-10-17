@@ -15,7 +15,9 @@ import {
 import { BuddyHeader } from "../../header/buddyHeader";
 import { ConfirmButton } from "../../button/confirmButton";
 import styled from "styled-components";
+import { registerBuddy } from "../../../services/apis/buddy.service";
 export const BuddyFinal = () => {
+  // 값 가져오기
   const { gender, major, subMajor, type, grade } = BuddyStore();
 
   // 해당 값을 누르면 그 페이지로 이동
@@ -33,7 +35,7 @@ export const BuddyFinal = () => {
     "SAME_DEPARTMENT": "같은 학과 버디",
     "NO_MATTER": "상관없음"
   }
-  // 버디 타입 텍스트 변환
+  // 버디 타입 텍스트 변환 
   const getTypeText: { [key: string]: string } = {
     "MATE": "동기",
     "SENIOR": "선배",
@@ -52,9 +54,37 @@ export const BuddyFinal = () => {
     "GRADE_4": "4학년(이상)"
   }
   const gradeText = grade
+  .sort()                         // 정렬(오름차순)
   .filter((g) => getGradeText[g]) // TypeText에 존재하는 값만 필터링
   .map((g) => getGradeText[g])    // 해당 값을 매핑
   .join(", ");                    // 문자열로 나열
+
+  // 카카오톡 아이디
+  const kakaoId: string | null = localStorage.getItem('kakaoAccount');
+  // 핸드폰 번호
+  let phoneNumber: string | null = localStorage.getItem('phoneNumber');
+  // 폰번호에 하이픈 넣기
+  if (phoneNumber) {
+    phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  }
+
+  const buddyRegisterHandler = async() => {
+    // 전달 데이터
+    const buddyData = {
+      "genderOption": gender,
+      "classTypeOption": type,
+      "gradeOption": grade,
+      "collegeMajorOption": major,
+      "isSubMajor": subMajor,
+    }
+
+    const response = await registerBuddy(buddyData);
+
+    // 버디등록 성공 시
+    if (response) {
+      navigate("/");
+    }
+  }
 
   return (
     <BuddyContainer>
@@ -100,11 +130,11 @@ export const BuddyFinal = () => {
           <BuddyConditionContainer2>
             <BuddyConditionContainer>
               <BuddyConditionTitle>카카오톡 아이디</BuddyConditionTitle>
-              <BuddyConditionInput>aaaaaaaa</BuddyConditionInput>
+              <BuddyConditionInput>{kakaoId}</BuddyConditionInput>
             </BuddyConditionContainer>
             <BuddyConditionContainer>
               <BuddyConditionTitle>전화번호</BuddyConditionTitle>
-              <BuddyConditionInput>010-1111-2222</BuddyConditionInput>
+              <BuddyConditionInput>{phoneNumber}</BuddyConditionInput>
             </BuddyConditionContainer>
           </BuddyConditionContainer2>
         </ButtonContainer>
@@ -112,6 +142,7 @@ export const BuddyFinal = () => {
         <ConfirmButton 
           text={'다음'}
           backgroundcolor={`${COLORS.main}`}
+          onClick={buddyRegisterHandler}
         />
       </BuddyContainer2>
     </BuddyContainer>
