@@ -83,6 +83,39 @@ export const signUpStep4Schema = z.object({
     .nonempty("학과를 선택해주세요."), // 학과 추가
 });
 
+//마이페이지 edit 스키마 정의
+export const mypageEditSchema = z
+  .object({
+    currentPassword: z
+      .string()
+      .min(10, { message: "비밀번호는 10자 이상이어야 합니다." })
+      .max(20, { message: "비밀번호는 20자 이하이어야 합니다." })
+      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).*$/, {
+        message: "비밀번호는 영어 + 숫자를 포함해야 합니다.",
+      }),
+    password: z
+      .string()
+      .min(10, { message: "비밀번호는 10자 이상이어야 합니다." })
+      .max(20, { message: "비밀번호는 20자 이하이어야 합니다." })
+      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).*$/, {
+        message: "비밀번호는 영어 + 숫자를 포함해야 합니다.",
+      }),
+    passwordCheck: z.string(),
+    nickname: z.string(),
+    kakaoAccount: z.string(),
+    phoneNumber: z
+      .string()
+      .regex(
+        /^010\d{8}$/,
+        "전화번호는 010으로 시작하는 11자리 숫자여야 합니다."
+      )
+      .nonempty("전화번호를 입력해주세요."),
+  })
+  .refine((data) => data.password === data.passwordCheck, {
+    path: ["passwordCheck"],
+    message: "비밀번호 확인이 일치하지 않습니다.",
+  });
 export type SigninType = z.infer<typeof signInSchema>;
 export type SignUpStep3FormData = z.infer<typeof signUpStep3Schema>;
 export type SignUpStep4FormData = z.infer<typeof signUpStep4Schema>;
+export type MyPageEditData = z.infer<typeof mypageEditSchema>;
