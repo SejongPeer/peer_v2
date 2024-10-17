@@ -4,6 +4,7 @@ export const COLORS = {
   sub1: "#D31D1D",
   sub2: "#FFE9E9",
   sub3: "#FAF4F4",
+  sub4: "#FCECEE",
   sub: "#FF7474",
   back1: "#FAFAFA",
   back2: "#FFFFFF",
