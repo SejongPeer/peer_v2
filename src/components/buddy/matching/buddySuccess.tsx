@@ -59,27 +59,27 @@ export const BuddySuccess = () => {
       <BuddyTitle>버디 매칭 성공!</BuddyTitle>
       <MatchingText>버디와 연락해 보세요!</MatchingText>
       <Slider>
-      <BuddyInfoControllerL onClick={handlePrev} />
-      <BuddyInfoContainer>
-        <BuddyInfoWrapper activeIndex={activeIndex}>
+        <BuddyInfoControllerL onClick={handlePrev} />
+        <BuddyInfoContainer>
           <BuddyInfoWrapper activeIndex={activeIndex}>
-            {buddyInfoList.map((buddy, index) => (
-              <BuddyInfo key={index}>
-                <InfoTitle>{index+1}번째 버디 정보</InfoTitle>
-                <Line />
-                <BuddyName>{buddy.name}</BuddyName>
-                <BuddyInfoText>{buddy.department}</BuddyInfoText>
-                <BuddyInfoText>{buddy.grade}</BuddyInfoText>
-                <BuddyKakao>
-                  <BuddyKakaoTitle>카카오톡 아이디</BuddyKakaoTitle>
-                  <BuddyKakaoText>{buddy.kakaoId}</BuddyKakaoText>
-                </BuddyKakao>
-              </BuddyInfo>
-            ))}
+            <BuddyInfoWrapper activeIndex={activeIndex}>
+              {buddyInfoList.map((buddy, index) => (
+                <BuddyInfo key={index}>
+                  <InfoTitle>{index + 1} 번째 버디 정보</InfoTitle>
+                  <Line />
+                  <BuddyName>{buddy.name}</BuddyName>
+                  <BuddyInfoText>{buddy.department}</BuddyInfoText>
+                  <BuddyInfoText>{buddy.grade}</BuddyInfoText>
+                  <BuddyKakao>
+                    <BuddyKakaoTitle>카카오톡 아이디</BuddyKakaoTitle>
+                    <BuddyKakaoText>{buddy.kakaoId}</BuddyKakaoText>
+                  </BuddyKakao>
+                </BuddyInfo>
+              ))}
+            </BuddyInfoWrapper>
           </BuddyInfoWrapper>
-        </BuddyInfoWrapper>
-      </BuddyInfoContainer>
-      <BuddyInfoControllerR onClick={handleNext} />
+        </BuddyInfoContainer>
+        <BuddyInfoControllerR onClick={handleNext} />
       </Slider>
 
       <Notice>*옆으로 넘겨 다른 버디를 확인해주세요.</Notice>
