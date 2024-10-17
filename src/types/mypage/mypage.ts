@@ -1,7 +1,10 @@
+import { UseFormRegisterReturn } from "react-hook-form";
+
 export interface EditInformProps {
-  disabledProps?: boolean; //사용 가능 여부
+  disabledProps?: boolean;
   title: string;
   cont: string;
+  register?: UseFormRegisterReturn;
 }
 
 export interface GuideInfo {
@@ -12,4 +15,17 @@ export interface MatchingInfoProps {
   title: string;
   explain: string;
   img?: string;
+}
+
+export interface MyPageResponse {
+  name: string;
+  grade: number;
+  kakaoAccount: string;
+  major: string;
+  minor: string;
+  nickname: string;
+  phoneNumber: string;
+  account: string;
+  studentId: string;
+  gender: string;
 }

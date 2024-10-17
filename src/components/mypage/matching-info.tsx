@@ -28,6 +28,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 `;
 const ContBox = styled.div`
   display: flex;
@@ -47,5 +48,5 @@ const Explain = styled.p`
 
 const Img = styled.img`
   width: 64px;
-  height: 48px;
+  height: 58px;
 `;

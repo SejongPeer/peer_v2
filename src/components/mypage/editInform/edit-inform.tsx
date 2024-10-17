@@ -8,11 +8,12 @@ export const EditInform: React.FC<EditInformProps> = ({
   disabledProps,
   title,
   cont,
+  register,
 }) => {
   return (
     <InformBox disabledProps={disabledProps}>
       <Title>{title}</Title>
-      <Content disabled={disabledProps} placeholder={cont} />
+      <Content disabled={disabledProps} defaultValue={cont} {...register} />
     </InformBox>
   );
 };

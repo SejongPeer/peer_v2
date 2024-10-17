@@ -4,14 +4,14 @@ import { COLORS } from "../theme";
 
 import logo from "../assets/images/peerLogo.png";
 import userIcon from "../assets/images/user.png";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 export const Header = () => {
   const token = localStorage.getItem("accessToken"); // localStorage에서 토큰 가져오기
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
-  console.log("location:", location);
+  // console.log("location:", location);
   const handleLoginClick = () => {
     if (token) {
       navigate("/my-page"); // 유저 아이콘 클릭 시 /my-page로 이동
