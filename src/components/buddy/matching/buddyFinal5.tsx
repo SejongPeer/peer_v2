@@ -1,9 +1,20 @@
 import { useNavigate } from "react-router-dom";
 
+//Zustand
 import { BuddyStore } from "../../../store/useBuddyStore";
 
+// API
+import { registerBuddy } from "../../../services/apis/buddy.service";
+
+// Components
+import { BuddyHeader } from "../../header/buddyHeader";
+import { ConfirmButton } from "../../button/confirmButton";
+import { toast } from "sonner";
+
+// style
+import styled from "styled-components";
 import { COLORS } from "../../../theme";
-import { 
+import {
   BuddyContainer,
   BuddyContainer2,
   InfoContainer,
@@ -12,79 +23,79 @@ import {
   ButtonContainer,
 } from "../../../styles/buddy-styles";
 
-import { BuddyHeader } from "../../header/buddyHeader";
-import { ConfirmButton } from "../../button/confirmButton";
-import styled from "styled-components";
-import { registerBuddy } from "../../../services/apis/buddy.service";
 export const BuddyFinal = () => {
   // 값 가져오기
   const { gender, major, subMajor, type, grade } = BuddyStore();
 
   // 해당 값을 누르면 그 페이지로 이동
   const navigate = useNavigate();
-  const navigateHandler = ( step:string ): void => {
+  const navigateHandler = (step: string): void => {
     navigate(`/buddy?step=${step}`);
-  }
+  };
 
   console.log(gender, major, subMajor, type, grade);
 
   // 텍스트 변환
   // 버디 범위 텍스트 변환
   const majorText: { [key: string]: string } = {
-    "SAME_COLLEGE": "같은 단과대 버디",
-    "SAME_DEPARTMENT": "같은 학과 버디",
-    "NO_MATTER": "상관없음"
-  }
-  // 버디 타입 텍스트 변환 
+    SAME_COLLEGE: "같은 단과대 버디",
+    SAME_DEPARTMENT: "같은 학과 버디",
+    NO_MATTER: "상관없음",
+  };
+  // 버디 타입 텍스트 변환
   const getTypeText: { [key: string]: string } = {
-    "MATE": "동기",
-    "SENIOR": "선배",
-    "JUNIOR": "후배"
-  }
+    MATE: "동기",
+    SENIOR: "선배",
+    JUNIOR: "후배",
+  };
   const TypeText = type
-  .filter((t) => getTypeText[t]) // TypeText에 존재하는 값만 필터링
-  .map((t) => getTypeText[t])  // 해당 값을 매핑
-  .join(", ");                 // 문자열로 나열
-  
+    .filter((t) => getTypeText[t]) // TypeText에 존재하는 값만 필터링
+    .map((t) => getTypeText[t]) // 해당 값을 매핑
+    .join(", "); // 문자열로 나열
+
   // 버디 학년 텍스트 변환
   const getGradeText: { [key: string]: string } = {
-    "GRADE_1": "1학년",
-    "GRADE_2": "2학년",
-    "GRADE_3": "3학년",
-    "GRADE_4": "4학년(이상)"
-  }
+    GRADE_1: "1학년",
+    GRADE_2: "2학년",
+    GRADE_3: "3학년",
+    GRADE_4: "4학년(이상)",
+  };
   const gradeText = grade
-  .sort()                         // 정렬(오름차순)
-  .filter((g) => getGradeText[g]) // TypeText에 존재하는 값만 필터링
-  .map((g) => getGradeText[g])    // 해당 값을 매핑
-  .join(", ");                    // 문자열로 나열
+    .sort() // 정렬(오름차순)
+    .filter((g) => getGradeText[g]) // TypeText에 존재하는 값만 필터링
+    .map((g) => getGradeText[g]) // 해당 값을 매핑
+    .join(", "); // 문자열로 나열
 
   // 카카오톡 아이디
-  const kakaoId: string | null = localStorage.getItem('kakaoAccount');
+  const kakaoId: string | null = localStorage.getItem("kakaoAccount");
   // 핸드폰 번호
-  let phoneNumber: string | null = localStorage.getItem('phoneNumber');
+  let phoneNumber: string | null = localStorage.getItem("phoneNumber");
   // 폰번호에 하이픈 넣기
   if (phoneNumber) {
     phoneNumber = phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   }
 
-  const buddyRegisterHandler = async() => {
+  const buddyRegisterHandler = async () => {
     // 전달 데이터
     const buddyData = {
-      "genderOption": gender,
-      "classTypeOption": type,
-      "gradeOption": grade,
-      "collegeMajorOption": major,
-      "isSubMajor": subMajor,
-    }
+      genderOption: gender,
+      classTypeOption: type,
+      gradeOption: grade,
+      collegeMajorOption: major,
+      isSubMajor: subMajor,
+    };
+    console.log(buddyData);
 
     const response = await registerBuddy(buddyData);
 
-    // 버디등록 성공 시
+    //버디등록 성공 시
     if (response) {
+      toast.success("버디 등록이 완료되었습니다.");
       navigate("/");
+    } else {
+      toast.success("버디 등록을 실패했습니다.");
     }
-  }
+  };
 
   return (
     <BuddyContainer>
@@ -98,8 +109,7 @@ export const BuddyFinal = () => {
         <ButtonContainer>
           <BuddyConditionContainer>
             <BuddyConditionTitle>버디 성별</BuddyConditionTitle>
-            <BuddyConditionInput 
-              onClick={() => navigateHandler('1')}>
+            <BuddyConditionInput onClick={() => navigateHandler("1")}>
               {gender === "SAME" ? "동성" : "상관없음"}
             </BuddyConditionInput>
           </BuddyConditionContainer>
@@ -107,22 +117,21 @@ export const BuddyFinal = () => {
           <BuddyConditionContainer2>
             <BuddyConditionContainer>
               <BuddyConditionTitle>버디 범위</BuddyConditionTitle>
-              <BuddyConditionInput
-                onClick={() => navigateHandler('2')}>
+              <BuddyConditionInput onClick={() => navigateHandler("2")}>
                 {majorText[major] || "오류"}
-                </BuddyConditionInput>
+              </BuddyConditionInput>
             </BuddyConditionContainer>
             <BuddyConditionContainer>
               <BuddyConditionTitle>버디 관계</BuddyConditionTitle>
-              <BuddyConditionInput onClick={() => navigateHandler('3')}>
+              <BuddyConditionInput onClick={() => navigateHandler("3")}>
                 {TypeText}
               </BuddyConditionInput>
-          </BuddyConditionContainer>
+            </BuddyConditionContainer>
           </BuddyConditionContainer2>
 
           <BuddyConditionContainer>
             <BuddyConditionTitle>버디 학년</BuddyConditionTitle>
-            <BuddyConditionInput onClick={() => navigateHandler('4')}>
+            <BuddyConditionInput onClick={() => navigateHandler("4")}>
               {gradeText}
             </BuddyConditionInput>
           </BuddyConditionContainer>
@@ -139,15 +148,15 @@ export const BuddyFinal = () => {
           </BuddyConditionContainer2>
         </ButtonContainer>
 
-        <ConfirmButton 
-          text={'다음'}
+        <ConfirmButton
+          text={"제출하기"}
           backgroundcolor={`${COLORS.main}`}
           onClick={buddyRegisterHandler}
         />
       </BuddyContainer2>
     </BuddyContainer>
   );
-}
+};
 
 const BuddyConditionContainer = styled.div`
   width: 100%;
@@ -162,7 +171,7 @@ const BuddyConditionInput = styled.button`
   width: 100%;
   border-radius: 8px;
   border: 1px solid ${COLORS.line1};
-  background-color: #FFF;
+  background-color: #fff;
   padding: 13px 16px;
   margin-top: 8px;
   text-align: left;

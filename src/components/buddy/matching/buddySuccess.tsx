@@ -1,12 +1,20 @@
+import { useEffect, useState } from "react";
+
+import { getBuddyInfo } from "../../../services/apis/buddy.service";
+
+// Components
+import { LoginHeader } from "../../loginHeader";
+import { BuddyStatus } from "../buddyStatus";
+import { ConfirmButton } from "../../button/confirmButton";
+
+// style
+import { COLORS } from "../../../theme";
 import styled from "styled-components";
 import { MatchingContainer, MatchingText } from "./buddyWaiting";
-import { LoginHeader } from "../../loginHeader";
-import { COLORS } from "../../../theme";
-import { BuddyStatus } from "../buddyStatus";
+
+// Img
 import left from "../../../assets/images/left-controller.svg";
 import right from "../../../assets/images/right-controller.svg";
-import { ConfirmButton } from "../../button/confirmButton";
-import { useState } from "react";
 
 interface BuddyInfoWrapperProps {
   activeIndex: number;
@@ -14,6 +22,10 @@ interface BuddyInfoWrapperProps {
 
 export const BuddySuccess = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    //getBuddyInfo();
+  }, []);
 
   const buddyInfoList = [
     {

@@ -1,42 +1,54 @@
+import { useNavigate } from "react-router-dom";
+
+import { cancelBuddy } from "../../../services/apis/buddy.service";
+
+// style
 import styled from "styled-components";
 import { COLORS } from "../../../theme";
+
+// Components
 import { LoginHeader } from "../../loginHeader";
 import { BuddyStatus } from "../buddyStatus";
-import buddyWaitingImg from "../../../assets/images/buddyWaiting.svg";
 import { NoticeBox } from "../../noticeBox";
 import { ConfirmButton } from "../../button/confirmButton";
-import { useNavigate } from "react-router-dom";
+
+// Img
+import buddyWaitingImg from "../../../assets/images/buddyWaiting.svg";
 
 export const BuddyWaiting = () => {
   const navigate = useNavigate();
   const HandleGoHome = () => {
-    navigate('/');
-  }
+    navigate("/");
+  };
 
-  return <MatchingContainer>
-    <LoginHeader 
-      text={""}
-      backgroundColor={COLORS.white}
-      textColor={COLORS.font1}
-      showGoBack={true}
-    />
+  return (
+    <MatchingContainer>
+      <LoginHeader
+        text={""}
+        backgroundColor={COLORS.white}
+        textColor={COLORS.font1}
+        showGoBack={true}
+      />
 
-    <BuddyStatus 
-      step={1}
-    />
-    <MatchingTitle>세종버디 신청 완료</MatchingTitle>
-    <MatchingText><BuddyCount>216</BuddyCount>명의 학생들이 버디를 찾고 있어요!</MatchingText>
-    <MatchingImg src={buddyWaitingImg}/>
-    <NoticeBox 
-      text={"버디를 찾으면 상대방의 정보(과, 학년) 확인 후 수락 / 거절할 수 있습니다!"}
-    />
-    <ConfirmButton 
-      text={"홈페이지로 이동"}
-      backgroundcolor={`${COLORS.main}`}
-      onClick={HandleGoHome}
-    />
-    <Cancel>버디 신청 취소</Cancel>
-  </MatchingContainer>
+      <BuddyStatus step={1} />
+      <MatchingTitle>세종버디 신청 완료</MatchingTitle>
+      <MatchingText>
+        <BuddyCount>{buddyCount}</BuddyCount>명의 학생들이 버디를 찾고 있어요!
+      </MatchingText>
+      <MatchingImg src={buddyWaitingImg} />
+      <NoticeBox
+        text={
+          "버디를 찾으면 상대방의 정보(과, 학년) 확인 후 수락 / 거절할 수 있습니다!"
+        }
+      />
+      <ConfirmButton
+        text={"홈페이지로 이동"}
+        backgroundcolor={`${COLORS.main}`}
+        onClick={HandleGoHome}
+      />
+      <Cancel onClick={cancelBuddy}>버디 신청 취소</Cancel>
+    </MatchingContainer>
+  );
 };
 
 export const MatchingContainer = styled.div`

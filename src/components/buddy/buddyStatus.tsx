@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { COLORS } from "../../theme";
+
 import unchecked from "../../assets/images/unfilledCheck.png";
 import checked from "../../assets/images/filledCheck.png";
 
@@ -7,40 +8,33 @@ interface BuddyMatchingStep {
   step: number;
 }
 
-export const BuddyStatus = ({step}:BuddyMatchingStep) => {
-
+export const BuddyStatus = ({ step }: BuddyMatchingStep) => {
   return (
     <StatusContainer>
       <StatusIconContainer>
-        <StatusIcon src={checked}/>
-        {(step >= 2) ? 
-        <StatusBarProgress />
-        :
-        <StatusBar/>}
-        <StatusIcon src={(step >= 2) ? checked : unchecked}/>
-        {(step >= 3) ? 
-        <StatusBarProgress />
-        :
-        <StatusBar/>}
-        <StatusIcon src={(step >= 3) ? checked : unchecked}/>
+        <StatusIcon src={checked} />
+        {step >= 2 ? <StatusBarProgress /> : <StatusBar />}
+        <StatusIcon src={step >= 2 ? checked : unchecked} />
+        {step >= 3 ? <StatusBarProgress /> : <StatusBar />}
+        <StatusIcon src={step >= 3 ? checked : unchecked} />
       </StatusIconContainer>
 
       <StatusTextContainer>
         <StatusTextTextNow>버디 찾는 중</StatusTextTextNow>
-        {(step >= 2) ? 
-        <StatusTextTextNow>버디 수락/거절</StatusTextTextNow>
-        :
-        <StatusTextText>버디 수락/거절</StatusTextText>}
-        {(step >= 3) ? 
-        <StatusTextTextNow>버디 정보확인</StatusTextTextNow>
-        :
-        <StatusTextText>버디 정보확인</StatusTextText>}
-
-        
+        {step >= 2 ? (
+          <StatusTextTextNow>버디 수락/거절</StatusTextTextNow>
+        ) : (
+          <StatusTextText>버디 수락/거절</StatusTextText>
+        )}
+        {step >= 3 ? (
+          <StatusTextTextNow>버디 정보확인</StatusTextTextNow>
+        ) : (
+          <StatusTextText>버디 정보확인</StatusTextText>
+        )}
       </StatusTextContainer>
     </StatusContainer>
-  )
-}
+  );
+};
 
 const StatusContainer = styled.div`
   width: 301px;
@@ -56,10 +50,10 @@ const StatusIconContainer = styled.div`
   align-items: center;
   gap: 8px;
   justify-content: center;
-`
+`;
 const StatusIcon = styled.img`
   width: 24px;
-  height: 24px
+  height: 24px;
 `;
 const StatusBar = styled.div`
   width: 48px;
