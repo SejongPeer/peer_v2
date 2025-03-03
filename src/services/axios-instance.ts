@@ -11,7 +11,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = window.localStorage.getItem("accessToken");
     const refreshToken = window.localStorage.getItem("refreshToken");
-
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

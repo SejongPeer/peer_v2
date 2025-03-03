@@ -1,12 +1,12 @@
+// src/pages/LoginPage.tsx
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import styled from "styled-components";
 import { SigninType, signInSchema } from "../lib/schema/auth.schema"; // 스키마 및 타입 임포트
-import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../theme";
 import { LoginHeader } from "../components/loginHeader";
-import { axiosInstance } from "../services/axios-instance"; // axiosInstance 가져오기
+import { useSignin } from "../services/queries/user.mutation";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,50 +19,11 @@ export const LoginPage = () => {
     resolver: zodResolver(signInSchema), // Zod 스키마를 리졸버로 사용
   });
 
-  // 로그인 요청 처리
+  // 로그인 mutation 훅 사용
+  const { mutateAsync: login, isPending: isSigninLoading } = useSignin();
+
   const onSubmit = async (data: SigninType) => {
-    try {
-      const response = await axiosInstance.post("/auth/sign-in", {
-        account: data.username, // API에서 요구하는 필드명
-        password: data.password,
-      });
-
-      console.log(response.data);
-      // 서버로부터 받은 토큰을 로컬 스토리지에 저장
-      const {
-        accessToken,
-        account,
-        gender,
-        grade,
-        kakaoAccount,
-        major,
-        minor,
-        name,
-        nickname,
-        phoneNumber,
-        refreshToken,
-        studentId,
-      } = response.data.data;
-      // 데이터를 로컬 스토리지에 저장
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("name", name); // 유저 이름도 저장
-      localStorage.setItem("account", account);
-      localStorage.setItem("gender", gender);
-      localStorage.setItem("grade", grade.toString()); // 숫자일 경우 문자열로 변환
-      localStorage.setItem("kakaoAccount", kakaoAccount);
-      localStorage.setItem("major", major);
-      localStorage.setItem("minor", minor);
-      localStorage.setItem("nickname", nickname);
-      localStorage.setItem("phoneNumber", phoneNumber);
-      localStorage.setItem("studentId", studentId);
-
-      toast.success("로그인 성공!");
-      navigate("/"); // 로그인 성공 시 메인 페이지로 이동
-    } catch (error) {
-      console.error("로그인 중 오류 발생:", error);
-      toast.error("로그인 실패! 아이디 또는 비밀번호를 확인해 주세요.");
-    }
+    await login(data); // 로그인 요청
   };
 
   return (
@@ -93,7 +54,9 @@ export const LoginPage = () => {
               <ErrorMessage>{errors.password.message}</ErrorMessage>
             )}
           </FormItem>
-          <SubmitButton type="submit">로그인</SubmitButton>
+          <SubmitButton type="submit" disabled={isSigninLoading}>
+            {isSigninLoading ? "로그인 중..." : "로그인"}
+          </SubmitButton>
         </Form>
         <Container2>
           <Find>ID • PW 찾기</Find>
@@ -108,6 +71,7 @@ export const LoginPage = () => {
   );
 };
 
+// 스타일 컴포넌트는 동일
 const Container = styled.div`
   display: flex;
   flex-direction: column;
