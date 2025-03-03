@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "yarn build",
+    "build": "vite build --output public",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
