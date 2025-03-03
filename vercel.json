@@ -1,0 +1,4 @@
+{
+  "routes": [{ "src": "/storybook/(.*)", "dest": "storybook-static/$1" }],
+  "builds": [{ "src": "storybook-static/**", "use": "@vercel/static" }]
+}
