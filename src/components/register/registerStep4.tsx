@@ -37,6 +37,7 @@ export const RegisterStep4 = () => {
   const major = localStorage.getItem("major");
   const name = localStorage.getItem("name");
 
+  console.log(major);
   // 닉네임 중복 확인
   const handleCheckNickname = async () => {
     if (nickname) {

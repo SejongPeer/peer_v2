@@ -1,17 +1,19 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { COLORS } from "../theme";
-
 import logo from "../assets/images/peerLogo.png";
 import userIcon from "../assets/images/user.png";
-// import { useLocation } from "react-router-dom";
+import { useUserAuth } from "../services/queries/user.queries";
 
 export const Header = () => {
-  const token = localStorage.getItem("accessToken"); // localStorage에서 토큰 가져오기
   const navigate = useNavigate();
   // const location = useLocation();
 
-  // console.log("location:", location);
+  // React Query 캐시에서 로그인 정보 및 토큰 가져오기
+  const { data: authData } = useUserAuth();
+  const token = authData?.accessToken; // 캐시된 토큰
+  console.log(token);
+
   const handleLoginClick = () => {
     if (token) {
       navigate("/my-page"); // 유저 아이콘 클릭 시 /my-page로 이동
@@ -34,6 +36,7 @@ export const Header = () => {
   );
 };
 
+// 스타일 컴포넌트는 동일
 const Container = styled.div`
   width: 100%;
   height: 48px;
