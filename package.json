@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
+    "build:main": "vite build",
+    "build:storybook": "storybook build -o storybook-static",
+    "build": "yarn build:main && yarn build:storybook",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
