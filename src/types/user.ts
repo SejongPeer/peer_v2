@@ -26,3 +26,22 @@ export interface CheckAccountResponse {
 export interface CheckNicknameResponse {
   isExist: boolean;
 }
+
+export interface UserInfo {
+  account: string;
+  gender: string;
+  grade: string;
+  kakaoAccount: string;
+  major: string;
+  minor: string;
+  name: string;
+  nickname: string;
+  phoneNumber: string;
+  studentId: string;
+}
+
+export interface AuthData {
+  accessToken: string;
+  refreshToken: string;
+  userInfo: UserInfo;
+}

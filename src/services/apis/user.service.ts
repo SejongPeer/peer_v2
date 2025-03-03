@@ -103,3 +103,38 @@ export const registerUser = async (formData: object) => {
     return null;
   }
 };
+
+// 회원탈퇴 API 요청 함수
+export const deleteUserAccount = async () => {
+  try {
+    const accessToken = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    console.log(accessToken);
+    console.log(refreshToken);
+
+    if (!accessToken || !refreshToken) {
+      toast.error("로그인이 필요합니다. 다시 로그인 해주세요.");
+      return null;
+    }
+
+    const response = await axiosInstance.delete("/member/my-page", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "x-refresh-token": refreshToken,
+      },
+    });
+
+    if (response.status === 200) {
+      toast.success("회원 탈퇴가 성공적으로 완료되었습니다.");
+      return response.data;
+    } else {
+      toast.error("회원 탈퇴에 실패했습니다.");
+      return null;
+    }
+  } catch (error) {
+    console.error("회원 탈퇴 중 오류 발생: ", error);
+    toast.error("회원 탈퇴 중 오류가 발생했습니다. 다시 시도해주세요.");
+    return null;
+  }
+};
