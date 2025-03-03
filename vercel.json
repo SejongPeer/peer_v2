@@ -1,5 +1,24 @@
 {
   "version": 2,
-  "builds": [{ "src": "storybook-static/**", "use": "@vercel/static" }],
-  "routes": [{ "src": "/storybook/(.*)", "dest": "storybook-static/$1" }]
+  "builds": [
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
+    },
+
+    {
+      "src": "storybook-static/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "^/storybook/(.*)",
+      "dest": "storybook-static/$1"
+    },
+    {
+      "src": "^/(.*)",
+      "dest": "dist/$1"
+    }
+  ]
 }
