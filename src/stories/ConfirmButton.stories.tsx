@@ -17,7 +17,7 @@ export default {
   },
 } as Meta<typeof ConfirmButton>;
 
-// 기본 버튼 스토리
+// 기본 버튼 스토리1
 export const Default: StoryObj<typeof ConfirmButton> = {
   args: {
     text: "확인",
