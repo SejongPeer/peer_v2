@@ -5,14 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
-    "build:main": "yarn build",
-    "build:storybook": "storybook build -o storybook-static",
-    "build": "yarn build:main && yarn build:storybook",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook-static"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
