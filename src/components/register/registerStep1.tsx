@@ -44,7 +44,7 @@ export const RegisterStep1 = () => {
 
   const handleNextClick = () => {
     if (isTermChecked && isPrivacyChecked) {
-      navigate("/register?step=2");
+      navigate("/register?step=3-1");
     }
   };
 
@@ -102,7 +102,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
 `;
-
 
 const TermsContainer = styled.div`
   padding: 24px;
