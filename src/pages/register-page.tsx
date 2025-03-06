@@ -1,8 +1,8 @@
 import { useSearchParams } from "react-router-dom";
 import RegisterPage1 from "../components/register/registerStep1";
 import RegisterPage2 from "../components/register/registerStep2";
-import RegisterStep3Part1 from "../components/register/registerStep3_1";
-import RegisterStep3Part2 from "../components/register/registerStep3_2";
+import { RegisterStep3 } from "../components/register/registerStep3_1";
+// import RegisterStep3Part2 from "../components/register/registerStep3_2";
 import RegisterPage4 from "../components/register/registerStep4";
 
 import { useEffect } from "react";
@@ -31,9 +31,9 @@ export const RegisterPage = () => {
       case "2":
         return <RegisterPage2 />; // 세종대학교 학생 인증
       case "3-1":
-        return <RegisterStep3Part1 />; // 아이디
+        return <RegisterStep3 />; // 아이디
       case "3-2":
-        return <RegisterStep3Part2 />; // 아이디
+      // return <RegisterStep3Part2 />; // 아이디
       case "4":
         return <RegisterPage4 />;
       default:

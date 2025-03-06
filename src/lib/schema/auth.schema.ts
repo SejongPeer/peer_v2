@@ -18,7 +18,48 @@ export const signInSchema = z.object({
     ),
 });
 
-export const signUpStep3Schema = z
+// export const signUpStep3_1Schema = z
+//   .object({
+//     account: z
+//       .string()
+//       .min(8, { message: "아이디는 8자 이상이어야 합니다." })
+//       .regex(/^[a-zA-Z][a-zA-Z0-9]*$/, {
+//         message: "아이디는 영어로 시작하고, 영어 + 숫자 조합만 가능합니다.",
+//       }),
+//     password: z
+//       .string()
+//       .min(10, { message: "비밀번호는 10자 이상이어야 합니다." })
+//       .max(20, { message: "비밀번호는 20자 이하이어야 합니다." })
+//       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).*$/, {
+//         message: "비밀번호는 영어 + 숫자를 포함해야 합니다.",
+//       }),
+//     passwordCheck: z
+//       .string()
+//       .min(10, { message: "비밀번호는 10자 이상이어야 합니다." })
+//       .max(20, { message: "비밀번호는 20자 이하이어야 합니다." })
+//       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9]).*$/, {
+//         message: "비밀번호는 영어 + 숫자를 포함해야 합니다.",
+//       }),
+//   })
+//   .refine((data) => data.password === data.passwordCheck, {
+//     path: ["passwordCheck"],
+//     message: "비밀번호 확인이 일치하지 않습니다.",
+//   });
+
+// export const signUpStep3_2Schema = z.object({
+//   name: z
+//     .string()
+//     .min(2, { message: "이름은 2자 이상이어야 합니다." })
+//     .regex(/^[가-힣]+$/, { message: "이름은 한글만 입력 가능합니다." }),
+//   studentId: z.string(),
+//   grade: z
+//     .number()
+//     .min(1, { message: "학년은 1학년 이상이어야 합니다." })
+//     .max(4, { message: "학년은 4학년 이하이어야 합니다." }),
+// });
+
+// "3-1"과 "3-2"에서 나눠 쓰던 스키마를 합친 단일 스키마
+export const signUpSchema = z
   .object({
     account: z
       .string()
@@ -38,15 +79,19 @@ export const signUpStep3Schema = z
       .string()
       .min(2, { message: "이름은 2자 이상이어야 합니다." })
       .regex(/^[가-힣]+$/, { message: "이름은 한글만 입력 가능합니다." }),
-    studentId: z.string(),
+    studentId: z.string().min(1, { message: "학번을 입력해주세요." }),
     grade: z
-      .number()
+      .number({
+        // number 필드는 React Hook Form에서 valueAsNumber 옵션을 통해 변환
+        required_error: "학년을 입력해주세요.",
+        invalid_type_error: "학년은 숫자만 입력 가능합니다.",
+      })
       .min(1, { message: "학년은 1학년 이상이어야 합니다." })
       .max(4, { message: "학년은 4학년 이하이어야 합니다." }),
   })
   .refine((data) => data.password === data.passwordCheck, {
     path: ["passwordCheck"],
-    message: "비밀번호 확인이 일치하지 않습니다.",
+    message: "비밀번호가 일치하지 않습니다.",
   });
 
 // 회원가입 4단계 스키마 정의
@@ -116,6 +161,7 @@ export const mypageEditSchema = z
     message: "비밀번호 확인이 일치하지 않습니다.",
   });
 export type SigninType = z.infer<typeof signInSchema>;
-export type SignUpStep3FormData = z.infer<typeof signUpStep3Schema>;
+// export type SignUpStep3FormData = z.infer<typeof signUpStep3_1Schema>;
 export type SignUpStep4FormData = z.infer<typeof signUpStep4Schema>;
 export type MyPageEditData = z.infer<typeof mypageEditSchema>;
+export type SignUpFormData = z.infer<typeof signUpSchema>;

@@ -1,173 +1,186 @@
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import styled from "styled-components";
-import { COLORS } from "../../theme";
-import {
-  Body2Sb,
-  Body3Sb,
-  buttonStyle,
-  Head2,
-} from "../../styles/global-styles";
-import { checkAccountAvailability } from "../../services/apis/user.service";
-import { useState, useEffect } from "react";
-// import { useForm } from "react-hook-form"; // react-hook-form 주석 처리
-// import { useUserStore } from "../../store/useUserStore"; // Zustand 주석 처리
+import { useNavigate } from "react-router-dom";
+import { signUpSchema, SignUpFormData } from "../../lib/schema/auth.schema";
+import { toast } from "sonner";
 
-export const RegisterStep3Part1 = () => {
+// 스타일 임포트 (COLORS나 buttonStyle 등은 프로젝트 내부 정의에 맞게)
+import { COLORS } from "../../theme";
+import { Body2Sb, buttonStyle, Head2 } from "../../styles/global-styles";
+
+// 만약 아이디 중복확인 API 같은 게 필요하다면, import해서 사용하면 됨.
+// import { checkAccountAvailability } from "../../services/apis/user.service";
+
+export const RegisterStep3 = () => {
   const navigate = useNavigate();
 
-  // react-hook-form 주석 처리 및 useState로 상태 관리
-  const [account, setAccount] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
+  // ★ useForm 설정
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      account: "",
+      password: "",
+      passwordCheck: "",
+      name: "",
+      studentId: "",
+      grade: 1, // 기본값 예시
+    },
+  });
+
+  // 아이디 중복확인 로직을 쓰고 싶으면 이런 식으로:
+  /*
   const [isAccountChecked, setIsAccountChecked] = useState(false);
-  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
-
-  useEffect(() => {
-    // 모든 필드가 입력되고 아이디 중복 확인이 완료되었을 때만 버튼 활성화
-    if (
-      isAccountChecked &&
-      password &&
-      passwordCheck &&
-      password === passwordCheck
-    ) {
-      setIsButtonEnabled(true);
-    } else {
-      setIsButtonEnabled(false);
-    }
-  }, [isAccountChecked, password, passwordCheck]);
-
-  const onSubmit = () => {
-    // localStorage에 값 저장
-    localStorage.setItem("account", account);
-    localStorage.setItem("password", password);
-    localStorage.setItem("passwordCheck", passwordCheck);
-
-    navigate("/register?step=3-2"); // 다음 페이지로 이동
-  };
-
   const handleCheckAccount = async () => {
-    if (account) {
-      const isAvailable = await checkAccountAvailability(account);
-      if (isAvailable) {
-        console.log("사용 가능한 아이디입니다.");
-        setIsAccountChecked(true);
-      } else {
-        console.log("사용할 수 없는 아이디입니다.");
-        setIsAccountChecked(false);
-      }
+    const accountValue = watch("account");
+    if (!accountValue) return;
+    const isAvailable = await checkAccountAvailability(accountValue);
+    if (!isAvailable) {
+      setError("account", { type: "manual", message: "이미 사용중인 아이디입니다." });
+      setIsAccountChecked(false);
+    } else {
+      clearErrors("account");
+      setIsAccountChecked(true);
+      alert("사용 가능한 아이디입니다!");
+    }
+  };
+  */
+
+  // 폼 제출시 (회원가입 로직)
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      console.log("전송 데이터:", data);
+
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      console.log("응답 상태:", response.status);
+
+      const result = await response.json();
+      console.log("MSW 응답:", result);
+
+      toast.success("회원가입 완료되었습니다!");
+      navigate("/login");
+    } catch (error) {
+      console.error("회원가입 오류:", error);
+      toast.error("회원가입 중 오류가 발생했습니다.");
     }
   };
 
   return (
     <Container>
-      <Text>아이디, 비밀번호</Text>
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
-        }}
-      >
-        <LabelContainer>
-          <Label>아이디</Label>
-          <InputContainer>
-            <Input
-              value={account}
-              onChange={(e) => setAccount(e.target.value)}
-              placeholder="아이디 입력"
-            />
-            <CheckButton type="button" onClick={handleCheckAccount}>
-              중복확인
-            </CheckButton>
-          </InputContainer>
-        </LabelContainer>
+      <Title>회원가입</Title>
+      <SubTitle>아이디, 비밀번호, 기본정보 입력</SubTitle>
 
-        <LabelContainer>
-          <Label>비밀번호</Label>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="비밀번호 입력"
-          />
-        </LabelContainer>
+      {/* 
+        handleSubmit(onSubmit) → 성공시 onSubmit 실행, 
+        실패 시 내부적으로 errors에 저장
+      */}
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        {/* 아이디 */}
+        <Label>아이디</Label>
+        <Input {...register("account")} placeholder="아이디 입력" />
+        {errors.account && <ErrorMsg>{errors.account.message}</ErrorMsg>}
 
-        <LabelContainer>
-          <Input
-            type="password"
-            value={passwordCheck}
-            onChange={(e) => setPasswordCheck(e.target.value)}
-            placeholder="비밀번호 확인"
-          />
-        </LabelContainer>
+        {/* 비밀번호 */}
+        <Label>비밀번호</Label>
+        <Input
+          type="password"
+          {...register("password")}
+          placeholder="비밀번호 입력"
+        />
+        {errors.password && <ErrorMsg>{errors.password.message}</ErrorMsg>}
 
-        <NextBtn type="submit" disabled={!isButtonEnabled}>
-          다음
-        </NextBtn>
+        {/* 비밀번호 확인 */}
+        <Label>비밀번호 확인</Label>
+        <Input
+          type="password"
+          {...register("passwordCheck")}
+          placeholder="비밀번호 확인"
+        />
+        {errors.passwordCheck && (
+          <ErrorMsg>{errors.passwordCheck.message}</ErrorMsg>
+        )}
+
+        {/* 이름 */}
+        <Label>이름</Label>
+        <Input {...register("name")} placeholder="이름 입력" />
+        {errors.name && <ErrorMsg>{errors.name.message}</ErrorMsg>}
+
+        {/* 학번 */}
+        <Label>학번</Label>
+        <Input {...register("studentId")} placeholder="학번 입력" />
+        {errors.studentId && <ErrorMsg>{errors.studentId.message}</ErrorMsg>}
+
+        {/* 학년 */}
+        <Label>학년</Label>
+        <Input
+          type="number"
+          {...register("grade", { valueAsNumber: true })} // number로 변환
+          placeholder="학년 (1~4)"
+        />
+        {errors.grade && <ErrorMsg>{errors.grade.message}</ErrorMsg>}
+
+        {/* "회원가입" 버튼 */}
+        <SubmitButton type="submit">회원가입</SubmitButton>
       </Form>
     </Container>
   );
 };
 
-// Styled-components로 스타일링한 컴포넌트들
+// ================== styled-components 예시 ================== //
 const Container = styled.div`
   padding: 24px;
 `;
 
 const Form = styled.form`
   margin-top: 12px;
+  display: flex;
+  flex-direction: column;
 `;
 
-const LabelContainer = styled.div``;
-const Label = styled.div`
-  margin-bottom: 8px;
+const Title = styled.h1`
+  ${Head2};
+  color: ${COLORS.font1};
+`;
+
+const SubTitle = styled.h2`
   ${Body2Sb}
   color: ${COLORS.font2};
+  margin-bottom: 16px;
 `;
 
-const Text = styled.p`
-  ${Head2}
-  color: ${COLORS.font1};
-  margin-bottom: 4px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
+const Label = styled.label`
+  margin-top: 12px;
+  margin-bottom: 8px;
 `;
 
 const Input = styled.input`
-  width: 100%;
   height: 48px;
-  background-color: white;
-  border-radius: 35px;
   border: 1px solid ${COLORS.line2};
-  padding: 10px 0px 10px 20px;
-  margin-bottom: 12px;
-`;
-
-const CheckButton = styled.button`
-  position: absolute;
-  right: 10px;
-  top: 40%;
-  transform: translateY(-50%);
-  height: 36px;
-  padding: 6px 14px;
-  ${Body3Sb}
-  color: white;
-  background-color: ${COLORS.main};
-  border: none;
   border-radius: 35px;
-  cursor: pointer;
-  width: 80px;
+  padding: 10px 20px;
+  font-size: 16px;
 `;
 
-const NextBtn = styled.button<{ disabled: boolean }>`
+const ErrorMsg = styled.div`
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 4px;
+`;
+
+const SubmitButton = styled.button`
   ${buttonStyle}
-  background-color: ${(props) =>
-    props.disabled ? COLORS.disabled : COLORS.main};
-  color: ${(props) => (props.disabled ? COLORS.white : COLORS.white)};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  margin-top: 24px;
+  background-color: ${COLORS.main};
+  color: #fff;
 `;
-
-export default RegisterStep3Part1;
